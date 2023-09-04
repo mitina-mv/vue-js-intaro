@@ -4,7 +4,7 @@ const app = Vue.createApp({
 			sectionUnits: [
 				{
 					code: "size",
-					value: "мера длинны",
+					value: "мера длины",
 				},
 				{
 					code: "temp",
@@ -26,6 +26,10 @@ const app = Vue.createApp({
 			unitTo: null,
 			result: null,
 		};
+	},
+
+	mounted() {
+		this.setDefaultUnits()
 	},
 
 	methods: {
@@ -50,8 +54,12 @@ const app = Vue.createApp({
 					this.result = this.getAngleResult();
 					break;
 			}
+		},
+		setDefaultUnits() {
+			this.unitFrom = this.units[this.curUnit][0]
+			this.unitTo = this.units[this.curUnit][1]
 
-			console.log(this.result);
+			this.getResult()
 		},
 		getSizeResult() {
 			const unitConversions = {

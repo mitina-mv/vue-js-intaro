@@ -6,12 +6,28 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- <link rel="stylesheet" href="style.css"> -->
 		<title>Перевод единиц измерения</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+			crossorigin="anonymous"
+		/>
 	</head>
 	<body>
-		<div id="app">
-			<div>
-				<label for="section_units">Выберите раздел</label>
-				<select name="section_units" id="section_units" v-model="curUnit">
+		<div id="app" class="container">
+			<h1 class="display-4">Конвертер единиц измерения</h1>
+
+			<div class="mb-3">
+				<label for="section_units" class="form-label"
+					>Выберите раздел</label
+				>
+				<select
+					name="section_units"
+					id="section_units"
+					v-model="curUnit"
+					class="form-control"
+					@change="setDefaultUnits"
+				>
 					<option
 						v-for="(item, index) in sectionUnits"
 						:key="index"
@@ -22,36 +38,62 @@
 				</select>
 			</div>
 
-			<div>
-				<div class="form-item">
-					<label for="">Значение</label>
-					<input type="number" name="value1" v-model="number" @change="getResult">
+			<div class="row g-3 align-items-center mb-3">
+				<div class="form-item col-auto">
+					<label for="" class="form-label">Значение</label>
+					<input
+						type="number"
+						name="value1"
+						v-model="number"
+						@change="getResult"
+						class="form-control"
+					/>
 				</div>
 
-				<div class="form-item">
-					<label for="">Конвертировать из</label>
-					<select name="" id="" v-model="unitFrom" @change="getResult">
-						<option 
-						v-for="(item, index) in units[curUnit]"
-						:value="item">{{item}}
-					</option>
+				<div class="form-item col-auto">
+					<label for="" class="form-label">Конвертировать из</label>
+					<select
+						name=""
+						id=""
+						v-model="unitFrom"
+						@change="getResult"
+						class="form-control"
+					>
+						<option
+							v-for="(item, index) in units[curUnit]"
+							:value="item"
+						>
+							{{item}}
+						</option>
 					</select>
 				</div>
-				
-				<div class="form-item">
-					<label for="">Конвертировать в</label>
-					<select name="" id="" v-model="unitTo" @change="getResult">
-						<option 
-						v-for="(item, index) in units[curUnit]"
-						:value="item">{{item}}
-					</option>
+
+				<div class="form-item col-auto">
+					<label for="" class="form-label">Конвертировать в</label>
+					<select
+						name=""
+						id=""
+						v-model="unitTo"
+						@change="getResult"
+						class="form-control"
+					>
+						<option
+							v-for="(item, index) in units[curUnit]"
+							:value="item"
+						>
+							{{item}}
+						</option>
 					</select>
 				</div>
 			</div>
 
 			<div class="result">
-				<div v-show="!result">Нет результата</div>
-				<div v-show="result">{{ number }} {{ unitFrom }} = {{ result }} {{ unitTo }}</div>
+				<div class="alert alert-danger" role="alert"  v-show="!result">
+					Нет результата
+				</div>
+				<div v-show="result" class="display-6 mark">
+					<b>{{ number }} {{ unitFrom }} = {{ result }} {{ unitTo }}</b>
+				</div>
 			</div>
 		</div>
 
