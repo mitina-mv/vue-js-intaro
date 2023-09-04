@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- <link rel="stylesheet" href="style.css"> -->
+		<title>Перевод единиц измерения</title>
+	</head>
+	<body>
+		<div id="app">
+			<div>
+				<label for="section_units">Выберите раздел</label>
+				<select name="section_units" id="section_units" v-model="curUnit">
+					<option
+						v-for="(item, index) in sectionUnits"
+						:key="index"
+						:value="item.code"
+					>
+						{{item.value}}
+					</option>
+				</select>
+			</div>
+
+			<div>
+				<div class="form-item">
+					<label for="">Значение</label>
+					<input type="number" name="value1" v-model="number" @change="getResult">
+				</div>
+
+				<div class="form-item">
+					<label for="">Конвертировать из</label>
+					<select name="" id="" v-model="unitFrom" @change="getResult">
+						<option 
+						v-for="(item, index) in units[curUnit]"
+						:value="item">{{item}}
+					</option>
+					</select>
+				</div>
+				
+				<div class="form-item">
+					<label for="">Конвертировать в</label>
+					<select name="" id="" v-model="unitTo" @change="getResult">
+						<option 
+						v-for="(item, index) in units[curUnit]"
+						:value="item">{{item}}
+					</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="result">
+				<div v-show="!result">Нет результата</div>
+				<div v-show="result">{{ number }} {{ unitFrom }} = {{ result }} {{ unitTo }}</div>
+			</div>
+		</div>
+
+		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+		<script src="script.js"></script>
+	</body>
+</html>
