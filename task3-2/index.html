@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Резюме</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <div id="app" class="container">
+            <h1 class="display-4">Генератор резюме</h1>
+            <form>
+                <div class="mb-3">
+                    <label for="profession" class="form-label"
+                        >Профессия:</label
+                    >
+                    <input
+                        type="text"
+                        id="profession"
+                        v-model="profession"
+                        class="form-control"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="city" class="form-label">Город:</label>
+                    <input
+                        type="text"
+                        id="city"
+                        v-model="city"
+                        class="form-control"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="photo" class="form-label"
+                        >Ссылка на фото:</label
+                    >
+                    <input
+                        type="text"
+                        id="photo"
+                        v-model="photo"
+                        class="form-control"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">ФИО:</label>
+                    <input
+                        type="text"
+                        id="fullName"
+                        v-model="fullName"
+                        class="form-control"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Телефон:</label>
+                    <input
+                        type="text"
+                        id="phone"
+                        v-model="phone"
+                        class="form-control"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input
+                        type="text"
+                        id="email"
+                        v-model="email"
+                        class="form-control"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="birthdate" class="form-label"
+                        >Дата рождения:</label
+                    >
+                    <input
+                        type="date"
+                        id="birthdate"
+                        v-model="birthdate"
+                        class="form-control"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="education" class="form-label"
+                        >Образование:</label
+                    >
+                    <textarea
+                        id="education"
+                        v-model="education"
+                        class="form-control"
+                    ></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="desiredSalary" class="form-label"
+                        >Желаемая зарплата:</label
+                    >
+                    <input
+                        type="text"
+                        id="desiredSalary"
+                        v-model="desiredSalary"
+                        class="form-control"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="skills" class="form-label"
+                        >Ключевые навыки:</label
+                    >
+                    <textarea
+                        id="skills"
+                        v-model="skills"
+                        class="form-control"
+                    ></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="aboutMe" class="form-label">О себе:</label>
+                    <textarea
+                        id="aboutMe"
+                        v-model="aboutMe"
+                        class="form-control"
+                    ></textarea>
+                </div>
+            </form>
+
+            <div class="resume">
+                <h2>Резюме</h2>
+                <p><strong>Профессия:</strong> {{ profession }}</p>
+                <p><strong>Город:</strong> {{ city }}</p>
+                <p><strong>Фото:</strong> <img :src="photo" alt="Фото" /></p>
+                <p><strong>ФИО:</strong> {{ fullName }}</p>
+                <p><strong>Телефон:</strong> {{ phone }}</p>
+                <p><strong>Email:</strong> {{ email }}</p>
+                <p><strong>Дата рождения:</strong> {{ birthdate }}</p>
+                <p><strong>Образование:</strong> {{ education }}</p>
+                <p><strong>Желаемая зарплата:</strong> {{ desiredSalary }}</p>
+                <p><strong>Ключевые навыки:</strong> {{ skills }}</p>
+                <p><strong>О себе:</strong> {{ aboutMe }}</p>
+            </div>
+        </div>
+
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>
