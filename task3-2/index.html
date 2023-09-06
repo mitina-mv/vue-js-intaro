@@ -12,11 +12,16 @@
             crossorigin="anonymous"
         />
     </head>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
     <body>
-        <div id="app" class="container">
+        <div id="app" class="container" v-cloak>
             <h1 class="display-4">Генератор резюме</h1>
-            <form>
-                <div class="mb-3">
+            <form class="row g-3 align-items-center mb-3">
+                <div class="mb-3 col-3">
                     <label for="profession" class="form-label"
                         >Профессия:</label
                     >
@@ -27,7 +32,7 @@
                         class="form-control"
                     />
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-3">
                     <label for="city" class="form-label">Город:</label>
                     <input
                         type="text"
@@ -36,7 +41,7 @@
                         class="form-control"
                     />
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-3">
                     <label for="photo" class="form-label"
                         >Ссылка на фото:</label
                     >
@@ -47,7 +52,7 @@
                         class="form-control"
                     />
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-3">
                     <label for="fullName" class="form-label">ФИО:</label>
                     <input
                         type="text"
@@ -56,7 +61,7 @@
                         class="form-control"
                     />
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-3">
                     <label for="phone" class="form-label">Телефон:</label>
                     <input
                         type="text"
@@ -65,7 +70,7 @@
                         class="form-control"
                     />
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-3">
                     <label for="email" class="form-label">Email:</label>
                     <input
                         type="text"
@@ -74,7 +79,7 @@
                         class="form-control"
                     />
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-3">
                     <label for="birthdate" class="form-label"
                         >Дата рождения:</label
                     >
@@ -85,17 +90,49 @@
                         class="form-control"
                     />
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-3">
                     <label for="education" class="form-label"
                         >Образование:</label
                     >
-                    <textarea
+                    <select
+                        name="education"
                         id="education"
                         v-model="education"
                         class="form-control"
-                    ></textarea>
+                    >
+                        <option
+                            :value="index"
+                            :key="index"
+                            v-for="(item, index) in educationList"
+                        >
+                            {{ item }}
+                        </option>
+                    </select>
                 </div>
-                <div class="mb-3">
+
+                <div class="mb-3 col-12" v-show="education && education != 'middle'">
+                    <h6 class="display-6">Сведения об образовании</h6>
+
+                    <div class="row g-3 align-items-center mb-3">
+                        <div
+                            class="mb-3 col-3"
+                            v-for="(item, index) in eduDetail"
+                            :key="index"
+                        >
+                            <label for="email" class="form-label"
+                                >{{ item.title }}:</label
+                            >
+                            <input
+                                :type="item.type ? item.type : 'text'"
+                                :id="index"
+                                v-model="item.value"
+                                class="form-control"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 col-3">
                     <label for="desiredSalary" class="form-label"
                         >Желаемая зарплата:</label
                     >
@@ -106,7 +143,7 @@
                         class="form-control"
                     />
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-3">
                     <label for="skills" class="form-label"
                         >Ключевые навыки:</label
                     >
@@ -116,7 +153,7 @@
                         class="form-control"
                     ></textarea>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-3">
                     <label for="aboutMe" class="form-label">О себе:</label>
                     <textarea
                         id="aboutMe"
@@ -124,11 +161,13 @@
                         class="form-control"
                     ></textarea>
                 </div>
+
+                <button class="btn btn-primary" @click.prevent="showResume">Применить</button>
             </form>
 
-            <div class="resume">
+            <div class="resume" v-show="showResumeFlag">
                 <h2>Резюме</h2>
-                <p><strong>Профессия:</strong> {{ profession }}</p>
+                <p><strong>Профессия:</strong> {{ getProfession }}</p>
                 <p><strong>Город:</strong> {{ city }}</p>
                 <p><strong>Фото:</strong> <img :src="photo" alt="Фото" /></p>
                 <p><strong>ФИО:</strong> {{ fullName }}</p>
