@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "vue-loader": "^17.2.2",
+    "vue-template-compiler": "^2.7.14"
+  }
+}
