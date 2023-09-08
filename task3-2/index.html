@@ -11,16 +11,12 @@
             integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
             crossorigin="anonymous"
         />
+        <link rel="stylesheet" href="style.css" />
     </head>
-    <style>
-        [v-cloak] {
-            display: none;
-        }
-    </style>
     <body>
         <div id="app" class="container" v-cloak>
             <h1 class="display-4">Генератор резюме</h1>
-            <form class="row g-3 align-items-center mb-3">
+            <form class="row g-3 mb-3">
                 <div class="mb-3 col-3">
                     <label for="profession" class="form-label"
                         >Профессия:</label
@@ -28,7 +24,7 @@
                     <input
                         type="text"
                         id="profession"
-                        v-model="profession"
+                        v-model="enterData['profession']"
                         class="form-control"
                     />
                 </div>
@@ -37,7 +33,7 @@
                     <input
                         type="text"
                         id="city"
-                        v-model="city"
+                        v-model="enterData.city"
                         class="form-control"
                     />
                 </div>
@@ -48,7 +44,7 @@
                     <input
                         type="text"
                         id="photo"
-                        v-model="photo"
+                        v-model="enterData.photo"
                         class="form-control"
                     />
                 </div>
@@ -57,7 +53,7 @@
                     <input
                         type="text"
                         id="fullName"
-                        v-model="fullName"
+                        v-model="enterData.fullName"
                         class="form-control"
                     />
                 </div>
@@ -66,16 +62,22 @@
                     <input
                         type="text"
                         id="phone"
-                        v-model="phone"
+                        v-model="enterData.phone"
                         class="form-control"
                     />
+                    <div
+                        class="invalid-feedback invalid-display"
+                        v-show="validatePhone"
+                    >
+                        {{ validatePhone }}
+                    </div>
                 </div>
                 <div class="mb-3 col-3">
                     <label for="email" class="form-label">Email:</label>
                     <input
                         type="text"
                         id="email"
-                        v-model="email"
+                        v-model="enterData.email"
                         class="form-control"
                     />
                 </div>
@@ -86,7 +88,7 @@
                     <input
                         type="date"
                         id="birthdate"
-                        v-model="birthdate"
+                        v-model="enterData['birthdate']"
                         class="form-control"
                     />
                 </div>
@@ -97,8 +99,8 @@
                     <select
                         name="education"
                         id="education"
-                        v-model="education"
-                        class="form-control"
+                        v-model="enterData.education"
+                        class="form-select"
                     >
                         <option
                             :value="index"
@@ -110,13 +112,16 @@
                     </select>
                 </div>
 
-                <div class="mb-3 col-12" v-show="education && education != 'middle'">
+                <div
+                    class="mb-3 col-12"
+                    v-show="enterData.education && enterData.education != 'middle'"
+                >
                     <h6 class="display-6">Сведения об образовании</h6>
 
                     <div class="row g-3 align-items-center mb-3">
                         <div
                             class="mb-3 col-3"
-                            v-for="(item, index) in eduDetail"
+                            v-for="(item, index) in eduDetailFields"
                             :key="index"
                         >
                             <label for="email" class="form-label"
@@ -125,7 +130,7 @@
                             <input
                                 :type="item.type ? item.type : 'text'"
                                 :id="index"
-                                v-model="item.value"
+                                v-model="enterData[index]"
                                 class="form-control"
                             />
                         </div>
@@ -139,7 +144,7 @@
                     <input
                         type="text"
                         id="desiredSalary"
-                        v-model="desiredSalary"
+                        v-model="enterData.desiredSalary"
                         class="form-control"
                     />
                 </div>
@@ -149,7 +154,7 @@
                     >
                     <textarea
                         id="skills"
-                        v-model="skills"
+                        v-model="enterData.skills"
                         class="form-control"
                     ></textarea>
                 </div>
@@ -157,27 +162,42 @@
                     <label for="aboutMe" class="form-label">О себе:</label>
                     <textarea
                         id="aboutMe"
-                        v-model="aboutMe"
+                        v-model="enterData.aboutMe"
                         class="form-control"
                     ></textarea>
                 </div>
 
-                <button class="btn btn-primary" @click.prevent="showResume">Применить</button>
+                <button class="btn btn-primary" @click.prevent="showResume">
+                    Применить
+                </button>
             </form>
 
             <div class="resume" v-show="showResumeFlag">
                 <h2>Резюме</h2>
-                <p><strong>Профессия:</strong> {{ getProfession }}</p>
-                <p><strong>Город:</strong> {{ city }}</p>
-                <p><strong>Фото:</strong> <img :src="photo" alt="Фото" /></p>
-                <p><strong>ФИО:</strong> {{ fullName }}</p>
-                <p><strong>Телефон:</strong> {{ phone }}</p>
-                <p><strong>Email:</strong> {{ email }}</p>
-                <p><strong>Дата рождения:</strong> {{ birthdate }}</p>
-                <p><strong>Образование:</strong> {{ education }}</p>
-                <p><strong>Желаемая зарплата:</strong> {{ desiredSalary }}</p>
-                <p><strong>Ключевые навыки:</strong> {{ skills }}</p>
-                <p><strong>О себе:</strong> {{ aboutMe }}</p>
+
+                <div class="" v-for="(field, key) in fields" :key="key">
+                    <div v-if="!field.type || field.type == 'text'">
+                        <strong>{{field.title}}:</strong> {{ resumeData[key] }}
+                    </div>
+                    <div v-else-if="field.type == 'image'">
+                        <strong>{{field.title}}:</strong>
+                        <img :src="resumeData[key]" :alt="field.title" />
+                    </div>
+                    <div
+                        v-if="key == 'education' && enterData.education != 'middle'"
+                    >
+                        <div
+                            class=""
+                            v-for="(eduField, keyEdu) in eduDetailFields"
+                            :key="keyEdu"
+                        >
+                            <p>
+                                <strong>{{eduField.title}}:</strong> {{
+                                resumeData[keyEdu] }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -1,0 +1,6 @@
+[v-cloak] {
+    display: none;
+}
+.invalid-display {
+    display: block;
+}
