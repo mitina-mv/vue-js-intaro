@@ -1,18 +1,83 @@
 <template>
-    <ResumeForm/>
-    <ResumeReport/>
+    <ResumeForm :fields="fields" :eduDetailFields="eduDetailFields"/>
+    <!-- <ResumeReport/> -->
 </template>
 
 <script>
 import ResumeForm from "./components/resume/Form.vue";
-import ResumeReport from "./components/resume/Report.vue";
+// import ResumeReport from "./components/resume/Report.vue";
 
 export default {
     name: "App",
     components: {
         ResumeForm,
-        ResumeReport,
+        // ResumeReport,
     },
+    data() {
+        return {
+            fields: {
+                profession: {
+                    title: "Профессия",
+                },
+                city: {
+                    title: "Город",
+                },
+                photo: {
+                    title: "Ссылка на фото",
+                    outerType: 'image'
+                },
+                fullName: {
+                    title: "ФИО",
+                },
+                phone: {
+                    title: "Телефон",
+                },
+                email: {
+                    title: "Email",
+                },
+                birthdate: {
+                    title: "Дата рождения",
+                    inputType: 'date'
+                },
+                education: {
+                    title: "Образование",
+                    type: 'select',
+                    optionsList: {                       
+                        middle: "Среднее",
+                        middleSpec: "Среднее специальное",
+                        semiHigh: "Неоконченное высшее",
+                        universe: "Высшее",
+                    }
+                },
+                desiredSalary: {
+                    title: "Желаемая зарплата",
+                },
+                skills: {
+                    title: "Ключевые навыки",
+                },
+                aboutMe: {
+                    title: "О себе",
+                    type: 'textarea'
+                },
+            },
+
+            eduDetailFields: {
+                institution: {
+                    title: "Учебное заведение",
+                },
+                faculty: {
+                    title: "Факультет",
+                },
+                specialization: {
+                    title: "Специальность",
+                },
+                endYear: {
+                    title: "Год окончания",
+                    inputType: "number",
+                },
+            },
+        }
+    }
 };
 </script>
 
