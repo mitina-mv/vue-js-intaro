@@ -4,6 +4,7 @@
             <resume-input
                 :type="field.type"
                 :name="key"
+                :inputType="field.inputType ? field.inputType : null"
                 :caption="field.title"
                 :optionsList="field.optionsList ? field.optionsList : null"
                 v-model="enterData[key]"
@@ -51,7 +52,10 @@ export default {
                 email: "",
                 birthdate: "",
                 education: "",
-                desiredSalary: "",
+                desiredSalary: {
+                    value: 0,
+                    units: 'rub'
+                },
                 skills: "",
                 aboutMe: "",
                 institution: "",

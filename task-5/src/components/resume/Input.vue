@@ -27,6 +27,32 @@
         v-else-if="type == 'input'"
     />
 
+    <div v-else-if="type == 'money'">
+        <input
+            type="number"
+            :name="name"
+            :id="name"
+            :value="modelValue.value"
+            @input="$emit('update:modelValue', $event.target.value)"
+            class="form-control"
+        />
+        <select
+            :name="name + '_units'"
+            :id="name + '_units'"
+            @input="$emit('update:modelValue', $event.target.value)"
+            class="form-select"
+            :value="modelValue.units"
+        >
+            <option
+                :value="index"
+                :key="index"
+                v-for="(item, index) in moneyUnits"
+            >
+                {{ item }}
+            </option>
+        </select>
+    </div>
+
     <textarea
         :name="name"
         :id="name"
@@ -63,7 +89,15 @@ export default {
             required: false,
         },
     },
-    emits: ['update:modelValue'],
-    
+    emits: ["update:modelValue"],
+    data() {
+        return {
+            moneyUnits: {
+                rub: "Рубль",
+                usd: 'Доллар США',
+                eur: 'Евро'
+            }
+        }
+    }
 };
 </script>
