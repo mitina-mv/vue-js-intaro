@@ -29,6 +29,8 @@
 
         <button class="btn btn-primary" @click.prevent="log">Применить</button>
     </form>
+
+    <img :src="enterData.photo">
 </template>
 
 <script>
@@ -53,7 +55,7 @@ export default {
                 birthdate: "",
                 education: "",
                 desiredSalary: {
-                    value: 0,
+                    count: 0,
                     units: 'rub'
                 },
                 skills: "",
@@ -62,6 +64,7 @@ export default {
                 faculty: "",
                 specialization: "",
                 endYear: "",
+                sex: ""
             },
         };
     },
