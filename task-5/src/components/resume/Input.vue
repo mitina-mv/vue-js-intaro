@@ -113,19 +113,6 @@ export default {
                 this.$emit('update:modelValue', this.inputValue)
             }
         },
-        // getPathPhoto() {
-        //     if(this.inputType != 'file'){
-        //         this.previewPath = null;
-        //         return;
-        //     }
-
-        //     if(this.modelValue.name.includes(".png") ||
-        //         this.modelValue.name.includes(".jpg")
-        //     ) {
-        //         this.$emit('update:modelValue', URL.createObjectURL(this.modelValue))
-        //         // $emit('update:modelValue', URL.createObjectURL(this.modelValue))
-        //     }
-        // }
     }
 };
 </script>

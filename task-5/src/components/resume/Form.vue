@@ -9,13 +9,15 @@
                 :optionsList="field.optionsList ? field.optionsList : null"
                 v-model="enterData[key]"
             ></resume-input>
+        </div>
+
+        <div class="row mb-3 col-12" v-if="enterData.education && enterData.education != 'middle'">
             <div
-                v-if="key == 'education' && enterData.education && enterData.education != 'middle'"
+                v-for="(eduField, keyEdu) in eduDetailFields"
+                :key="keyEdu"
                 class="mb-3 col-3"
             >
                 <resume-input
-                    v-for="(eduField, keyEdu) in eduDetailFields"
-                    :key="keyEdu"
                     :type="eduField.type"
                     :name="keyEdu"
                     :caption="eduField.title"
@@ -27,10 +29,8 @@
             </div>
         </div>
 
-        <button class="btn btn-primary" @click.prevent="log">Применить</button>
+        <button class="btn btn-primary" @click.prevent="$emit('send', enterData)">Применить</button>
     </form>
-
-    <img :src="enterData.photo">
 </template>
 
 <script>
@@ -42,9 +42,9 @@ export default {
         ResumeInput,
     },
     props: ["fields", "eduDetailFields"],
+    emits: ['send'],
     data() {
         return {
-            data1: "11",
             enterData: {
                 profession: "",
                 city: "",
@@ -56,7 +56,7 @@ export default {
                 education: "",
                 desiredSalary: {
                     count: 0,
-                    units: 'rub'
+                    units: "rub",
                 },
                 skills: "",
                 aboutMe: "",
@@ -64,14 +64,10 @@ export default {
                 faculty: "",
                 specialization: "",
                 endYear: "",
-                sex: ""
+                sex: "",
+                workSchedule: "",
             },
         };
-    },
-    methods: {
-        log() {
-            console.log(this.enterData);
-        },
     },
 };
 </script>
