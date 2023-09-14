@@ -1,7 +1,8 @@
 <template>
     <div class="container">
+        <h1 class="display-4">Генератор резюме</h1>
         <ResumeForm :fields="fields" @send="sendEnterData" />
-        <ResumeReport :fields="fields" :data="reportData"/>
+        <ResumeReport :fields="fields" :data="reportData" v-if="reportData != null"/>
     </div>
 </template>
 
@@ -37,6 +38,7 @@ export default {
                 },
                 phone: {
                     title: "Телефон",
+                    inputType: "tel",
                 },
                 sex: {
                     title: "Пол",
@@ -103,12 +105,13 @@ export default {
                 },
             },
 
-            reportData: {}
+            reportData: null
         };
     },
     methods: {
         sendEnterData(getData) {
             this.reportData = getData
+            console.log(getData);
         }
     }
 };
@@ -119,7 +122,6 @@ export default {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: #2c3e50;
     margin-top: 60px;
 }

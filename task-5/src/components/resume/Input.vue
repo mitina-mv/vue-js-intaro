@@ -17,15 +17,22 @@
         </option>
     </select>
 
-    <input
-        :type="inputType"
-        :name="name"
-        :id="name"
-        v-model="inputValue"
-        @input="setInputValue"
-        class="form-control"
-        v-else-if="type == 'input'"
-    />
+    <template v-else-if="type == 'input'">
+        <input
+            :type="inputType"
+            :name="name"
+            :id="name"
+            v-model="inputValue"
+            @input="setInputValue"
+            class="form-control"
+        />
+        <div
+            class="invalid-feedback invalid-display"
+            v-show="validatePhone && inputType == 'tel'"
+        >
+            {{ validatePhone }}
+        </div>
+    </template>
 
     <div class="d-flex" v-else-if="type == 'money'">
         <input
@@ -94,25 +101,45 @@ export default {
         return {
             moneyUnits: {
                 rub: "Рубль",
-                usd: 'Доллар США',
-                eur: 'Евро'
+                usd: "Доллар США",
+                eur: "Евро",
             },
             moneyValue: {
                 count: 0,
-                units: 'Рубль'
+                units: "Рубль",
             },
-            inputValue: ''
-        }
-    }, 
+            inputValue: "",
+        };
+    },
     methods: {
         setInputValue(event) {
-            if(this.inputType == 'file')
-            {
-                this.$emit('update:modelValue', URL.createObjectURL(event.target.files[0]))
+            if (this.inputType == "file") {
+                this.$emit(
+                    "update:modelValue",
+                    URL.createObjectURL(event.target.files[0])
+                );
             } else {
-                this.$emit('update:modelValue', this.inputValue)
+                this.$emit("update:modelValue", this.inputValue);
             }
         },
-    }
+    },
+
+    computed: {
+        validatePhone() {
+            const phoneNumberPattern = /^[0-9]{6,10}$/;
+
+            if (phoneNumberPattern.test(this.inputValue)) {
+                return "";
+            } else {
+                return "Номер телефона должен состоять из 6-10 цифр.";
+            }
+        },
+    },
 };
 </script>
+
+<style scoped>
+.invalid-display {
+    display: block;
+}
+</style>

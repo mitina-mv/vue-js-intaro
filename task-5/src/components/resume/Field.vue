@@ -6,13 +6,13 @@
         </template>
 
         <template v-else-if="type == 'money'">
-            <b>{{ title }}:</b>
+            <b>{{ title }}:&ensp;</b>
             <span class="money-value"> {{ value.count }} </span>&ensp;
             <span class="money-units"> {{ value.units }}</span>
         </template>
 
         <template v-else>
-            <b>{{ title }}:</b> {{ value }}
+            <b>{{ title }}:&ensp;</b>{{ value }}
         </template>
     </div>
 </template>
@@ -35,3 +35,40 @@ export default {
     },
 };
 </script>
+
+<style>
+.field.field-image {
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #ccc;
+}
+
+.field.field-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 25%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    background: #0000004d;
+    font-size: 1.5em;
+    color: #fff;
+}
+.field {
+    font-size: 1.25em;
+}
+</style>
