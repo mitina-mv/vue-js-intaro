@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-        <ResumeForm :fields="fields" :eduDetailFields="eduDetailFields" @send="sendEnterData" />
-        <ResumeReport :fields="fields" :eduDetailFields="eduDetailFields" :data="reportData"/>
+        <ResumeForm :fields="fields" @send="sendEnterData" />
+        <ResumeReport :fields="fields" :data="reportData"/>
     </div>
 </template>
 
@@ -87,10 +87,7 @@ export default {
                         semiHigh: "Неоконченное высшее",
                         universe: "Высшее",
                     },
-                }
-            },
-
-            eduDetailFields: {
+                },
                 institution: {
                     title: "Учебное заведение",
                 },
@@ -105,13 +102,13 @@ export default {
                     inputType: "number",
                 },
             },
+
             reportData: {}
         };
     },
     methods: {
         sendEnterData(getData) {
             this.reportData = getData
-            console.log(this.reportData);
         }
     }
 };

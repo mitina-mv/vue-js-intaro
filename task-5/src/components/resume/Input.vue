@@ -40,11 +40,11 @@
             :name="name + '_units'"
             :id="name + '_units'"
             @input="$emit('update:modelValue', moneyValue)"
-            class="form-select"
             v-model="moneyValue.units"
+            class="form-select"
         >
             <option
-                :value="index"
+                :value="item"
                 :key="index"
                 v-for="(item, index) in moneyUnits"
             >
@@ -99,7 +99,7 @@ export default {
             },
             moneyValue: {
                 count: 0,
-                units: 'rub'
+                units: 'Рубль'
             },
             inputValue: ''
         }

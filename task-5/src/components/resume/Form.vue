@@ -1,35 +1,36 @@
 <template>
     <form class="row g-3 mb-3">
         <div class="mb-3 col-3" v-for="(field, key) in fields" :key="key">
-            <resume-input
-                :type="field.type"
-                :name="key"
-                :inputType="field.inputType ? field.inputType : null"
-                :caption="field.title"
-                :optionsList="field.optionsList ? field.optionsList : null"
-                v-model="enterData[key]"
-            ></resume-input>
-        </div>
-
-        <div class="row mb-3 col-12" v-if="enterData.education && enterData.education != 'middle'">
-            <div
-                v-for="(eduField, keyEdu) in eduDetailFields"
-                :key="keyEdu"
-                class="mb-3 col-3"
-            >
+            <div v-show="
+                ![
+                    'institution',
+                    'faculty',
+                    'specialization',
+                    'endYear',
+                ].includes(key) ||
+                (enterData.education !== '' &&
+                enterData.education != 'middle')
+            ">
                 <resume-input
-                    :type="eduField.type"
-                    :name="keyEdu"
-                    :caption="eduField.title"
-                    :optionsList="
-                        eduField.optionsList ? eduField.optionsList : null
-                    "
-                    v-model="enterData[keyEdu]"
-                ></resume-input>
+                    :type="field.type"
+                    :name="key"
+                    :inputType="field.inputType ? field.inputType : null"
+                    :caption="field.title"
+                    :optionsList="field.optionsList ? field.optionsList : null"
+                    v-model="enterData[key]"
+                />
             </div>
+            
         </div>
 
-        <button class="btn btn-primary" @click.prevent="$emit('send', enterData)">Применить</button>
+        <button
+            class="btn btn-primary"
+            @click.prevent="
+                $emit('send', JSON.parse(JSON.stringify(enterData)))
+            "
+        >
+            Применить
+        </button>
     </form>
 </template>
 
@@ -42,7 +43,7 @@ export default {
         ResumeInput,
     },
     props: ["fields", "eduDetailFields"],
-    emits: ['send'],
+    emits: ["send"],
     data() {
         return {
             enterData: {
@@ -69,5 +70,7 @@ export default {
             },
         };
     },
+    methods: {
+    }
 };
 </script>
