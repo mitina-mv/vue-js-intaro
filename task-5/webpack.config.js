@@ -3,7 +3,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
-    entry: "./src/main.js", // Ваш главный файл приложения
+    entry: "./src/main.js", // главный файл приложения
     output: {
         path: path.resolve(__dirname, "dist"), // Папка для сборки
         filename: "bundle.js", // Имя выходного файла
@@ -38,3 +38,4 @@ module.exports = {
         extensions: ["*", ".js", ".vue", ".json"],
     },
 };
+
