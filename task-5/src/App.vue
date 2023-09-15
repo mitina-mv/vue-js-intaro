@@ -22,6 +22,7 @@ import ResumeReport from "./components/resume/Report.vue";
 import MainLayout from "./layouts/MainLayout.vue";
 import VK_API_KEY from "../VK_API_KEY.txt";
 import axios from "axios";
+import { getObjByVkResponse } from './func'
 
 const API_KEY = VK_API_KEY;
 
@@ -42,7 +43,7 @@ export default {
                     title: "Город",
                     type: "select",
                     optionsList: [],
-                    default: '0'
+                    default: "0",
                 },
                 photo: {
                     title: "Фото",
@@ -123,6 +124,9 @@ export default {
                 },
                 institution: {
                     title: "Учебное заведение",
+                    type: "select",
+                    optionsList: [],
+                    default: "0",
                 },
                 faculty: {
                     title: "Факультет",
@@ -144,14 +148,27 @@ export default {
 
         axios
             .get(
-                `http://localhost:3000/getVkData?countryCode=${countryCode}&apiKey=${API_KEY}`,
+                `http://localhost:3000/getVkData?countryCode=${countryCode}&apiKey=${API_KEY}`
             )
             .then((response) => {
-                this.fields.city.optionsList = response.data.response.items.map(item => item.title)
+                this.fields.city.optionsList = getObjByVkResponse(response.data.response.items)
+                this.fields.city.default = response.data.response.items[0]['id']
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
+            });
+
+        axios
+            .get(
+                `http://localhost:3000/getVkUniverse?countryCode=${countryCode}&apiKey=${API_KEY}&cityId=1`
+            )
+            .then((response) => {
+                this.fields.institution.optionsList = getObjByVkResponse(response.data.response.items)
+                this.fields.institution.default = response.data.response.items[0]['id']
             })
+            .catch((error) => {
+                console.error(error);
+            });
     },
     methods: {
         sendEnterData(getData) {

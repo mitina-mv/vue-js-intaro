@@ -64,7 +64,7 @@
         :name="name"
         :id="name"
         :value="modelValue"
-        @input="$emit('update:modelValue', modelValue)"
+        @input="$emit('update:modelValue', $event.target.value)"
         v-else-if="type == 'textarea'"
         class="form-control"
     ></textarea>

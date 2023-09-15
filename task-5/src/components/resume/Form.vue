@@ -55,10 +55,7 @@ export default {
                 email: "",
                 birthdate: "",
                 education: "",
-                desiredSalary: {
-                    count: 0,
-                    units: "rub",
-                },
+                desiredSalary: "",
                 skills: "",
                 aboutMe: "",
                 institution: "",
