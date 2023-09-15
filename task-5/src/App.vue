@@ -40,6 +40,9 @@ export default {
                 },
                 city: {
                     title: "Город",
+                    type: "select",
+                    optionsList: [],
+                    default: '0'
                 },
                 photo: {
                     title: "Фото",
@@ -143,7 +146,12 @@ export default {
             .get(
                 `http://localhost:3000/getVkData?countryCode=${countryCode}&apiKey=${API_KEY}`,
             )
-            .then((response) => console.log(response));
+            .then((response) => {
+                this.fields.city.optionsList = response.data.response.items.map(item => item.title)
+            })
+            .catch(error => {
+                console.error(error);
+            })
     },
     methods: {
         sendEnterData(getData) {
