@@ -1,9 +1,17 @@
 <template>
-    <div class="container">
-        <h1 class="display-4">Генератор резюме</h1>
-        <ResumeForm :fields="fields" @send="sendEnterData" />
-        <ResumeReport :fields="fields" :data="reportData" v-if="reportData != null"/>
-    </div>
+    <main-layout>
+        <template #content>
+            <div class="container">
+                <h1 class="display-4">Генератор резюме</h1>
+                <ResumeForm :fields="fields" @send="sendEnterData" />
+                <ResumeReport
+                    :fields="fields"
+                    :data="reportData"
+                    v-if="reportData != null"
+                />
+            </div>
+        </template>
+    </main-layout>
 </template>
 
 <script>
@@ -11,12 +19,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import ResumeForm from "./components/resume/Form.vue";
 import ResumeReport from "./components/resume/Report.vue";
+import MainLayout from "./layouts/MainLayout.vue";
 
 export default {
     name: "App",
     components: {
         ResumeForm,
         ResumeReport,
+        MainLayout,
     },
     data() {
         return {
@@ -59,7 +69,7 @@ export default {
                 },
                 desiredSalary: {
                     title: "Желаемая зарплата",
-                    type: 'money',
+                    type: "money",
                     outerType: "money",
                 },
                 skills: {
@@ -105,15 +115,15 @@ export default {
                 },
             },
 
-            reportData: null
+            reportData: null,
         };
     },
     methods: {
         sendEnterData(getData) {
-            this.reportData = getData
+            this.reportData = getData;
             console.log(getData);
-        }
-    }
+        },
+    },
 };
 </script>
 
@@ -123,6 +133,5 @@ export default {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-    margin-top: 60px;
 }
 </style>
