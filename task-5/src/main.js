@@ -10,7 +10,7 @@ import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
     if(iconName == 'fas' || iconName == 'prefix') return;
     library.add(fas[iconName]);
   }); */
-  
+
 library.add(faUserSecret)
 
 createApp(App)

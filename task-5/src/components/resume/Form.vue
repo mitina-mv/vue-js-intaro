@@ -42,7 +42,7 @@ export default {
     components: {
         ResumeInput,
     },
-    props: ["fields", "eduDetailFields"],
+    props: ["fields"],
     emits: ["send"],
     data() {
         return {
@@ -67,8 +67,17 @@ export default {
                 endYear: "",
                 sex: "",
                 workSchedule: "",
+                status: ''
             },
         };
+    },
+    mounted() {
+        for(let key in this.enterData)
+        {
+            if(this.fields[key]['default']) {
+                this.enterData[key] = this.fields[key]['default']
+            }
+        }
     },
     methods: {
     },

@@ -20,6 +20,10 @@ import "bootstrap";
 import ResumeForm from "./components/resume/Form.vue";
 import ResumeReport from "./components/resume/Report.vue";
 import MainLayout from "./layouts/MainLayout.vue";
+import VK_API_KEY from "../VK_API_KEY.txt";
+import axios from "axios";
+
+const API_KEY = VK_API_KEY;
 
 export default {
     name: "App",
@@ -57,6 +61,7 @@ export default {
                         male: "Муж",
                         fimale: "Жен",
                     },
+                    default: "male",
                 },
                 email: {
                     title: "Email",
@@ -85,10 +90,22 @@ export default {
                         remote: "Удаленная работа",
                         watch: "Вахтовый метод",
                     },
+                    default: "full",
                 },
                 aboutMe: {
                     title: "О себе",
                     type: "textarea",
+                },
+                status: {
+                    title: "Статус",
+                    type: "select",
+                    optionsList: {
+                        new: "Новое",
+                        interview: "Собеседование",
+                        adopted: "Принят",
+                        refused: "Отказ",
+                    },
+                    default: "new",
                 },
                 education: {
                     title: "Образование",
@@ -99,6 +116,7 @@ export default {
                         semiHigh: "Неоконченное высшее",
                         universe: "Высшее",
                     },
+                    default: "middle",
                 },
                 institution: {
                     title: "Учебное заведение",
@@ -118,10 +136,24 @@ export default {
             reportData: null,
         };
     },
+    mounted() {
+        let countryCode = 1;
+
+        axios
+            .get(
+                `https://api.vk.com/method/database.getCities?access_token=${API_KEY}&v=5.131&country_id=${countryCode}&need_all=0`,
+                // {
+                //     headers: {
+                //         "Content-Type": "application/json;charset=UTF-8",
+                //         "Access-Control-Allow-Origin": "*", 
+                //     },
+                // }
+            )
+            .then((response) => console.log(response));
+    },
     methods: {
         sendEnterData(getData) {
             this.reportData = getData;
-            console.log(getData);
         },
     },
 };
