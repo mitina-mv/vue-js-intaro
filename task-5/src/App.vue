@@ -141,13 +141,7 @@ export default {
 
         axios
             .get(
-                `https://api.vk.com/method/database.getCities?access_token=${API_KEY}&v=5.131&country_id=${countryCode}&need_all=0`,
-                // {
-                //     headers: {
-                //         "Content-Type": "application/json;charset=UTF-8",
-                //         "Access-Control-Allow-Origin": "*", 
-                //     },
-                // }
+                `http://localhost:3000/getVkData?countryCode=${countryCode}&apiKey=${API_KEY}`,
             )
             .then((response) => console.log(response));
     },
