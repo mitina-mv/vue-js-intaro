@@ -78,7 +78,7 @@ export default {
                         "aboutMe",
                     ],
                 },
-                {
+                /* {
                     title: "Образование",
                     names: [
                         "education",
@@ -87,7 +87,7 @@ export default {
                         "specialization",
                         "endYear",
                     ],
-                },
+                }, */
             ],
         };
     },

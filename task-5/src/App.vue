@@ -130,12 +130,15 @@ export default {
                 },
                 institution: {
                     title: "Учебное заведение",
-                    type: "select",
+                    type: "find-select",
                     optionsList: [],
                     default: "0",
                 },
                 faculty: {
                     title: "Факультет",
+                    type: "select",
+                    optionsList: [],
+                    default: "0",
                 },
                 specialization: {
                     title: "Специальность",
@@ -165,12 +168,6 @@ export default {
         if(res2) {
             this.fields.city.optionsList = getObjByVkResponse(res2.items)
             this.fields.city.default = res2.items[0]["id"]
-        }
-
-        let res3 = await getDataByApi(`http://localhost:3000/getVkUniverse?${q}&cityId=${this.fields.city.default}`)
-        if(res3) {
-            this.fields.institution.optionsList = getObjByVkResponse(res3.items)
-            this.fields.institution.default = res3.items[0]["id"]
         }
 
         this.loadFields = true;

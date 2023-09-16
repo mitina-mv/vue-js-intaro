@@ -4,6 +4,7 @@
             <div
                 v-show="
                     ![
+                        'education',
                         'institution',
                         'faculty',
                         'specialization',
@@ -28,7 +29,11 @@
         <button
             class="btn btn-primary"
             @click.prevent="
-                $emit('send', JSON.parse(JSON.stringify(enterData)), JSON.parse(JSON.stringify(localFields)))
+                $emit(
+                    'send',
+                    JSON.parse(JSON.stringify(enterData)),
+                    JSON.parse(JSON.stringify(localFields))
+                )
             "
         >
             Применить
@@ -60,32 +65,35 @@ export default {
                 phone: "",
                 email: "",
                 birthdate: "",
-                education: "",
                 desiredSalary: "",
                 skills: "",
                 aboutMe: "",
-                institution: "",
-                faculty: "",
-                specialization: "",
-                endYear: "",
+                educationDetail: [
+                    {
+                        education: "",
+                        institution: "",
+                        faculty: "",
+                        specialization: "",
+                        endYear: "",
+                    },
+                ],
                 sex: "",
                 workSchedule: "",
                 status: "",
             },
             localFields: this.fields,
-            findCity: ''
+            findCity: "",
         };
     },
     mounted() {
         for (let key in this.enterData) {
-            if (this.fields[key]["default"]) {
+            if (this.fields[key]["default"] && this.enterData[key]) {
                 this.enterData[key] = this.fields[key]["default"];
             }
         }
     },
     methods: {
-        async loadCityOptions() 
-        {
+        async loadCityOptions() {
             // Проверка, что region не пустой
             if (this.enterData.region) {
                 let countryCode = 1;
@@ -96,19 +104,21 @@ export default {
                         `http://localhost:3000/getVkData?${q}&regionId=${this.enterData.region}&q=${this.findCity}`
                     );
                     if (data) {
-                        this.localFields.city.optionsList = getObjByVkResponse(data.items);
+                        this.localFields.city.optionsList = getObjByVkResponse(
+                            data.items
+                        );
                         this.enterData.city = data.items[0]["id"];
                     } else {
-                        this.localFields.city.optionsList = []
+                        this.localFields.city.optionsList = [];
                     }
                 } catch (error) {
                     console.error(error);
                 }
             }
         },
-        async loadUniverseOptions() 
-        {
-            if(this.enterData.city) {
+        async loadUniverseOptions() {
+            if (this.enterData.city && this.enterData.education != "middle") {
+                console.log("sds");
                 let countryCode = 1;
                 let q = `countryCode=${countryCode}&apiKey=${API_KEY}`;
 
@@ -117,23 +127,50 @@ export default {
                         `http://localhost:3000/getVkUniverse?${q}&cityId=${this.enterData.city}`
                     );
                     if (data) {
-                        this.localFields.institution.optionsList = getObjByVkResponse(data.items);
+                        this.localFields.institution.optionsList =
+                            getObjByVkResponse(data.items);
                         this.enterData.institution = data.items[0]["id"];
                     } else {
-                        this.localFields.institution.optionsList = []
+                        this.localFields.institution.optionsList = [];
                     }
                 } catch (error) {
                     console.error(error);
                 }
             }
-        }
+        },
+        addEducation() {
+            this.enterData.educationDetail.push({
+                city: "",
+                institution: "",
+                faculty: "",
+                specialization: "",
+                endYear: "",
+            });
+        },
     },
-    computed: {
-    },
+    computed: {},
     watch: {
         "enterData.region": "loadCityOptions",
-        "findCity": "loadCityOptions",
-        "enterData.city": 'loadUniverseOptions'
+        findCity: "loadCityOptions",
+        "enterData.city": "loadUniverseOptions",
+        "enterData.education": "loadUniverseOptions",
+        "enterData.educationDetail": {
+            deep: true, // Следим за изменениями во всех вложенных объектах
+            handler(newVal) {
+                // newVal - новое значение eduDetail
+                // oldVal - старое значение eduDetail
+
+                // Вы можете выполнить здесь необходимые действия
+                console.log("eduDetail изменился");
+                newVal.forEach((item) => {
+                    // Добавьте watcher для свойства universe в каждом объекте
+                    this.$watch(
+                        () => item.institution,
+                        this.loadUniverseOptions
+                    );
+                });
+            },
+        },
     },
 };
 </script>

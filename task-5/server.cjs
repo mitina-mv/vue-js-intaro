@@ -50,6 +50,20 @@ app.get("/getVkRegions", async (req, res) => {
     }
 });
 
+app.get("/universe/faculties", async (req, res) => {
+    try {
+        const response = await axios.get(
+            `https://api.vk.com/method/database.getFaculties?access_token=${req.query.apiKey}&v=5.131&university_id=${req.query.university}&lang=0`
+        );
+        // Переслать ответ от VK API на клиент
+        res.json(response.data);
+    } catch (error) {
+        // Обработка ошибок
+        console.error(error);
+        res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Сервер запущен на порту ${port}`);
 });
