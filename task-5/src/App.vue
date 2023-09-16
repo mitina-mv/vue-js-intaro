@@ -1,11 +1,11 @@
 <template>
     <main-layout>
         <template #content>
-            <div class="container">
+            <div class="container" v-if="loadFields">
                 <h1 class="display-4">Генератор резюме</h1>
                 <ResumeForm :fields="fields" @send="sendEnterData" />
                 <ResumeReport
-                    :fields="fields"
+                    :fields="getFields"
                     :data="reportData"
                     v-if="reportData != null"
                 />
@@ -21,8 +21,8 @@ import ResumeForm from "./components/resume/Form.vue";
 import ResumeReport from "./components/resume/Report.vue";
 import MainLayout from "./layouts/MainLayout.vue";
 import VK_API_KEY from "../VK_API_KEY.txt";
-import axios from "axios";
-import { getObjByVkResponse } from './func'
+// import axios from "axios";
+import { getObjByVkResponse, getDataByApi } from "./func";
 
 const API_KEY = VK_API_KEY;
 
@@ -38,6 +38,12 @@ export default {
             fields: {
                 profession: {
                     title: "Профессия",
+                },
+                region: {
+                    title: "Регион",
+                    type: "select",
+                    optionsList: [],
+                    default: "0",
                 },
                 city: {
                     title: "Город",
@@ -141,40 +147,41 @@ export default {
             },
 
             reportData: null,
+            loadFields: false,
         };
     },
-    mounted() {
+    async mounted() 
+    {
         let countryCode = 1;
+        let q = `countryCode=${countryCode}&apiKey=${API_KEY}`;
 
-        axios
-            .get(
-                `http://localhost:3000/getVkData?countryCode=${countryCode}&apiKey=${API_KEY}`
-            )
-            .then((response) => {
-                this.fields.city.optionsList = getObjByVkResponse(response.data.response.items)
-                this.fields.city.default = response.data.response.items[0]['id']
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        let res1 = await getDataByApi(`http://localhost:3000/getVkRegions?${q}`)
+        if(res1) {
+            this.fields.region.optionsList = getObjByVkResponse(res1.items)
+            this.fields.region.default = res1.items[0]["id"]
+        }
 
-        axios
-            .get(
-                `http://localhost:3000/getVkUniverse?countryCode=${countryCode}&apiKey=${API_KEY}&cityId=1`
-            )
-            .then((response) => {
-                this.fields.institution.optionsList = getObjByVkResponse(response.data.response.items)
-                this.fields.institution.default = response.data.response.items[0]['id']
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        let res2 = await getDataByApi(`http://localhost:3000/getVkData?${q}&regionId=${this.fields.region.default}`)
+        if(res2) {
+            this.fields.city.optionsList = getObjByVkResponse(res2.items)
+            this.fields.city.default = res2.items[0]["id"]
+        }
+
+        let res3 = await getDataByApi(`http://localhost:3000/getVkUniverse?${q}&cityId=${this.fields.city.default}`)
+        if(res3) {
+            this.fields.institution.optionsList = getObjByVkResponse(res3.items)
+            this.fields.institution.default = res3.items[0]["id"]
+        }
+
+        this.loadFields = true;
     },
     methods: {
-        sendEnterData(getData) {
+        sendEnterData(getData) 
+        {
             this.reportData = getData;
         },
     },
+    computed: {},
 };
 </script>
 
