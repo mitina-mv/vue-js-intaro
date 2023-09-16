@@ -25,7 +25,7 @@ app.get("/getVkData", async (req, res) => {
 app.get("/getVkUniverse", async (req, res) => {
     try {
         const response = await axios.get(
-            `https://api.vk.com/method/database.getUniversities?access_token=${req.query.apiKey}&v=5.131&country_id=${req.query.countryCode}&lang=0&city_id=${req.query.cityId}`
+            `https://api.vk.com/method/database.getUniversities?access_token=${req.query.apiKey}&v=5.131&country_id=${req.query.countryCode}&lang=0&city_id=${req.query.cityId}&q=${req.query.q}`
         );
         // Переслать ответ от VK API на клиент
         res.json(response.data);

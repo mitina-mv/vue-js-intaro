@@ -131,13 +131,11 @@ export default {
                 institution: {
                     title: "Учебное заведение",
                     type: "find-select",
-                    optionsList: [],
                     default: "0",
                 },
                 faculty: {
                     title: "Факультет",
                     type: "select",
-                    optionsList: [],
                     default: "0",
                 },
                 specialization: {
@@ -173,7 +171,7 @@ export default {
         this.loadFields = true;
     },
     methods: {
-        sendEnterData(getData, fields)
+        sendEnterData(getData, eduData, fields)
         {
             this.reportData = {}
             for(let f in getData) {
