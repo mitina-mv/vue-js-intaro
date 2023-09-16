@@ -77,7 +77,8 @@
                     'send',
                     JSON.parse(JSON.stringify(enterData)),
                     JSON.parse(JSON.stringify(educationDetail)),
-                    JSON.parse(JSON.stringify(localFields))
+                    JSON.parse(JSON.stringify(localFields)),
+                    JSON.parse(JSON.stringify(educationOprions)),
                 )
             "
         >

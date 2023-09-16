@@ -151,37 +151,63 @@ export default {
             loadFields: false,
         };
     },
-    async mounted()
-    {
+    async mounted() {
         let countryCode = 1;
         let q = `countryCode=${countryCode}&apiKey=${API_KEY}`;
 
-        let res1 = await getDataByApi(`http://localhost:3000/getVkRegions?${q}`)
-        if(res1) {
-            this.fields.region.optionsList = getObjByVkResponse(res1.items)
-            this.fields.region.default = res1.items[0]["id"]
+        let res1 = await getDataByApi(
+            `http://localhost:3000/getVkRegions?${q}`
+        );
+        if (res1) {
+            this.fields.region.optionsList = getObjByVkResponse(res1.items);
+            this.fields.region.default = res1.items[0]["id"];
         }
 
-        let res2 = await getDataByApi(`http://localhost:3000/getVkData?${q}&regionId=${this.fields.region.default}&q=`)
-        if(res2) {
-            this.fields.city.optionsList = getObjByVkResponse(res2.items)
-            this.fields.city.default = res2.items[0]["id"]
+        let res2 = await getDataByApi(
+            `http://localhost:3000/getVkData?${q}&regionId=${this.fields.region.default}&q=`
+        );
+        if (res2) {
+            this.fields.city.optionsList = getObjByVkResponse(res2.items);
+            this.fields.city.default = res2.items[0]["id"];
         }
 
         this.loadFields = true;
     },
     methods: {
-        sendEnterData(getData, eduData, fields)
-        {
-            this.reportData = {}
-            for(let f in getData) {
-                if(fields[f].type == 'select' || fields[f].type == 'find-select') {
-                    this.reportData[f] = fields[f].optionsList[getData[f]]
+        sendEnterData(getData, eduData, fields, eduOptions) {
+            this.reportData = {};
+            for (let f in getData) {
+                if (
+                    fields[f].type == "select" ||
+                    fields[f].type == "find-select"
+                ) {
+                    this.reportData[f] = fields[f].optionsList[getData[f]];
                 } else {
-                    this.reportData[f] = getData[f]
+                    this.reportData[f] = getData[f];
                 }
             }
-            
+
+            this.reportData.education = [];
+            for (let g in eduData) {
+                let reportGroup = {};
+                let group = eduData[g];
+
+                for (let f in group) {
+                    if (
+                        fields[f].type == "select" ||
+                        fields[f].type == "find-select"
+                    ) {
+                        if (f == "institution" || f == "faculty")
+                            reportGroup[f] = eduOptions[g][f][group[f]];
+                        else reportGroup[f] = fields[f].optionsList[group[f]];
+                    } else {
+                        reportGroup[f] = group[f];
+                    }
+                }
+                this.reportData.education.push(reportGroup);
+            }
+
+            console.log(this.reportData);
         },
     },
     computed: {},

@@ -23,6 +23,27 @@
                 </template>
             </template>
         </div>
+
+        <div v-for="(group, indexGroup) in data.education" :key="indexGroup">
+            <h6 class="display-6 mb-3">
+                {{ educationFields.title }} {{ indexGroup + 1 }}
+            </h6>
+
+            <template v-for="key in educationFields.names" :key="key">
+                <template v-if="group[key]">
+                    <resume-field
+                        :title="fields[key]['title']"
+                        :value="group[key]"
+                        :type="
+                            fields[key]['outerType']
+                                ? fields[key]['outerType']
+                                : 'text'
+                        "
+                        class="mb-2"
+                    />
+                </template>
+            </template>
+        </div>
     </div>
 </template>
 
@@ -36,20 +57,18 @@ export default {
         ResumeField,
     },
     methods: {},
-    mounted(){
+    mounted() {
         console.log(this.data);
     },
     computed: {
-        getStatusKey() 
-        {
-            let obj = this.fields.status.optionsList
+        getStatusKey() {
+            let obj = this.fields.status.optionsList;
             for (var key in obj) {
-                let value = obj[key]
-                if(value == this.data.status)
-                    return key;
+                let value = obj[key];
+                if (value == this.data.status) return key;
             }
             return "new";
-        }
+        },
     },
     data() {
         return {
@@ -78,17 +97,17 @@ export default {
                         "aboutMe",
                     ],
                 },
-                /* {
-                    title: "Образование",
-                    names: [
-                        "education",
-                        "institution",
-                        "faculty",
-                        "specialization",
-                        "endYear",
-                    ],
-                }, */
             ],
+            educationFields: {
+                title: "Образование",
+                names: [
+                    "education",
+                    "institution",
+                    "faculty",
+                    "specialization",
+                    "endYear",
+                ],
+            },
         };
     },
 };
