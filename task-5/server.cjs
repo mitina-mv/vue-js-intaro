@@ -11,7 +11,7 @@ app.use(cors());
 app.get("/getVkData", async (req, res) => {
     try {
         const response = await axios.get(
-            `https://api.vk.com/method/database.getCities?access_token=${req.query.apiKey}&v=5.131&country_id=${req.query.countryCode}&lang=0&region_id=${req.query.regionId}&need_all=0`
+            `https://api.vk.com/method/database.getCities?access_token=${req.query.apiKey}&v=5.131&country_id=${req.query.countryCode}&lang=0&region_id=${req.query.regionId}&q=${req.query.q}`
         );
         // Переслать ответ от VK API на клиент
         res.json(response.data);

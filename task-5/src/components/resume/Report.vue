@@ -1,8 +1,8 @@
 <template>
     <div class="caption-group">
         <h5 class="display-5">Резюме</h5>
-        <div class="resume-status" :class="'resume-status_' + data['status']">
-            {{ fields["status"]["optionsList"][data["status"]] }}
+        <div class="resume-status" :class="'resume-status_' + getStatusKey">
+            {{ data["status"] }}
         </div>
     </div>
     <div class="report">
@@ -12,11 +12,7 @@
                 <template v-if="data[key]">
                     <resume-field
                         :title="fields[key]['title']"
-                        :value="
-                            fields[key]['type'] == 'select'
-                                ? fields[key]['optionsList'][data[key]]
-                                : data[key]
-                        "
+                        :value="data[key]"
                         :type="
                             fields[key]['outerType']
                                 ? fields[key]['outerType']
@@ -34,12 +30,27 @@
 import ResumeField from "./Field.vue";
 
 export default {
-    props: ["data", "fields", "eduDetailFields"],
+    props: ["data", "fields"],
     name: "ResumeReport",
     components: {
         ResumeField,
     },
     methods: {},
+    mounted(){
+        console.log(this.data);
+    },
+    computed: {
+        getStatusKey() 
+        {
+            let obj = this.fields.status.optionsList
+            for (var key in obj) {
+                let value = obj[key]
+                if(value == this.data.status)
+                    return key;
+            }
+            return "new";
+        }
+    },
     data() {
         return {
             fieldGroups: [

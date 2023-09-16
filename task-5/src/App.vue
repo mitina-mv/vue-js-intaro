@@ -5,7 +5,7 @@
                 <h1 class="display-4">Генератор резюме</h1>
                 <ResumeForm :fields="fields" @send="sendEnterData" />
                 <ResumeReport
-                    :fields="getFields"
+                    :fields="fields"
                     :data="reportData"
                     v-if="reportData != null"
                 />
@@ -47,7 +47,7 @@ export default {
                 },
                 city: {
                     title: "Город",
-                    type: "select",
+                    type: "find-select",
                     optionsList: [],
                     default: "0",
                 },
@@ -150,7 +150,7 @@ export default {
             loadFields: false,
         };
     },
-    async mounted() 
+    async mounted()
     {
         let countryCode = 1;
         let q = `countryCode=${countryCode}&apiKey=${API_KEY}`;
@@ -161,7 +161,7 @@ export default {
             this.fields.region.default = res1.items[0]["id"]
         }
 
-        let res2 = await getDataByApi(`http://localhost:3000/getVkData?${q}&regionId=${this.fields.region.default}`)
+        let res2 = await getDataByApi(`http://localhost:3000/getVkData?${q}&regionId=${this.fields.region.default}&q=`)
         if(res2) {
             this.fields.city.optionsList = getObjByVkResponse(res2.items)
             this.fields.city.default = res2.items[0]["id"]
@@ -176,9 +176,17 @@ export default {
         this.loadFields = true;
     },
     methods: {
-        sendEnterData(getData) 
+        sendEnterData(getData, fields)
         {
-            this.reportData = getData;
+            this.reportData = {}
+            for(let f in getData) {
+                if(fields[f].type == 'select' || fields[f].type == 'find-select') {
+                    this.reportData[f] = fields[f].optionsList[getData[f]]
+                } else {
+                    this.reportData[f] = getData[f]
+                }
+            }
+            
         },
     },
     computed: {},
