@@ -38,9 +38,9 @@ export default {
 
 <style>
 .field.field-image {
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
+    width: 350px;
+    height: 450px;
+    border-radius: 25px;
     box-sizing: border-box;
     overflow: hidden;
     position: relative;
