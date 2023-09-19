@@ -60,11 +60,36 @@
         </select>
     </div>
 
+    <div class="d-flex" v-else-if="type == 'find-select'">
+        <input
+            type="text"
+            :name="'find_' + name"
+            @input="$emit('update:findValue', $event.target.value)"
+            :value="findValue"
+            class="form-control"
+        />
+        <select
+            :name="name"
+            :id="name"
+            @input="$emit('update:modelValue', $event.target.value)"
+            class="form-select"
+            :value="modelValue"
+        >
+            <option
+                :value="index"
+                :key="index"
+                v-for="(item, index) in optionsList"
+            >
+                {{ item }}
+            </option>
+        </select>
+    </div>
+
     <textarea
         :name="name"
         :id="name"
         :value="modelValue"
-        @input="$emit('update:modelValue', modelValue)"
+        @input="$emit('update:modelValue', $event.target.value)"
         v-else-if="type == 'textarea'"
         class="form-control"
     ></textarea>
@@ -95,8 +120,11 @@ export default {
         modelValue: {
             required: false,
         },
+        findValue: {
+            required: false,
+        },
     },
-    emits: ["update:modelValue"],
+    emits: ["update:modelValue", "update:findValue"],
     data() {
         return {
             moneyUnits: {

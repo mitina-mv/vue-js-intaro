@@ -5,5 +5,13 @@ module.exports = defineConfig({
     output: {
       filename: 'js/masha_[name].js',
     }
-  }
+  },
+  chainWebpack: config => {
+    config.module
+    .rule('raw')
+    .test(/\.txt$/)
+    .use('raw-loader')
+    .loader('raw-loader')
+    .end()
+     }
 })
