@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('resumes', function (Blueprint $table) {
             $table->id();
-            $table->enum('status', ['new','interview','adopted','refused']);
+            $table->enum('status', ['new','interview','adopted','refused'])->default('new');
             $table->string('profession');
             $table->string('city');
             $table->string('photo_path');
