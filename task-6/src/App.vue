@@ -1,15 +1,18 @@
 <template>
-    <h1>dct ok</h1>
+	<ResumeMenu />
     <router-view />
 </template>
 
 <script>
+import ResumeMenu from './components/ResumeMenu';
 import { useRouter, useRoute } from "vue-router";
-import { ref } from 'vue'
+import { ref } from "vue";
 
 export default {
     name: "App",
-    components: {},
+    components: {
+        ResumeMenu,
+    },
 
     setup() {
         const router = useRouter();
@@ -17,7 +20,7 @@ export default {
 
         return {
             router,
-            route,
+            route
         };
     },
 };
