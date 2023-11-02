@@ -22,7 +22,7 @@ class ResumeController extends Controller
     public function detail(int $id)
     {
         return response()->json(
-            Resume::where('id', $id)->first(),
+            Resume::where('id', $id)->with('education')->first(),
             Response::HTTP_OK
         );
     }
@@ -46,7 +46,7 @@ class ResumeController extends Controller
         }
 
         return response()->json(
-            array_merge($resume, ['education' => $educations]),
+            array_merge($resume->toArray(), ['education' => $educations]),
             Response::HTTP_CREATED
         );
     }
@@ -64,7 +64,7 @@ class ResumeController extends Controller
 
         foreach($request->education as $education)
         {
-            if($education->id) 
+            if($education['id']) 
             {
                 $edu = Education::find($education['id']);
                 unset($education['id']);
@@ -79,7 +79,7 @@ class ResumeController extends Controller
         }
 
         return response()->json(
-            array_merge($resume, ['education' => $educations]),
+            array_merge($resume->toArray(), ['education' => $educations]),
             Response::HTTP_CREATED
         );
     }
