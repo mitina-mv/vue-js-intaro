@@ -12,14 +12,14 @@ use UnderflowException;
 
 class ResumeController extends Controller
 {
-    public function index()
+    public function list()
     {
         return response()->json([
             'items' => Resume::all()
         ], Response::HTTP_OK);
     }
 
-    public function show(int $id)
+    public function detail(int $id)
     {
         return response()->json(
             Resume::where('id', $id)->first(),
@@ -82,7 +82,7 @@ class ResumeController extends Controller
         );
     }
 
-    public function editStatus(StatusResumeRequest $request)
+    public function updateStatus(StatusResumeRequest $request)
     {
         $resume = Resume::find($request->id);
         $resume->update([

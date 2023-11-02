@@ -20,5 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'cv'], function() {
-    Route::get('/', [ResumeController::class, 'index']);
+    Route::get('/', [ResumeController::class, 'list']);
+    Route::get('/{id}', [ResumeController::class, 'detail']);
+    Route::post('/', [ResumeController::class, 'store']);
+    Route::post('/{id}', [ResumeController::class, 'edit']);
+    Route::post('/{id}/status', [ResumeController::class, 'updateStatus']);
 });
