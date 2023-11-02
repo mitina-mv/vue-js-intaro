@@ -1,5 +1,5 @@
 <template>
-    <MegaMenu :model="items">
+    <Menubar :model="items">
         <template #start>
             <img
                 alt="logo"
@@ -8,9 +8,8 @@
                 class="mr-2"
             />
         </template>
-        <template #item="{ label, item, props, hasSubmenu }">
+        <template #item="{ label, item, props }">
             <router-link
-                v-if="item.route"
                 v-slot="routerProps"
                 :to="item.route"
                 custom
@@ -24,31 +23,18 @@
                     <span v-bind="props.label">{{ label }}</span>
                 </a>
             </router-link>
-            <a
-                v-else
-                :href="item.url"
-                :target="item.target"
-                v-bind="props.action"
-            >
-                <span v-bind="props.icon" />
-                <span v-bind="props.label">{{ label }}</span>
-                <span
-                    :class="[hasSubmenu && 'pi pi-fw pi-angle-down']"
-                    v-bind="props.submenuicon"
-                />
-            </a>
         </template>
-    </MegaMenu>
+    </Menubar>
 </template>
 
 <script>
-import MegaMenu from "primevue/megamenu";
+import Menubar from 'primevue/menubar';
 import { ref } from "vue";
 
 export default {
     name: "ResumeMenu",
     components: {
-        MegaMenu,
+        Menubar,
     },
 
     setup() {
