@@ -26,7 +26,7 @@ class ResumeRequest extends FormRequest
             'work_schedule' => ['required', 'in:full,flexible,shift,remote,watch'],
             'profession' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
-            'photo' => ['required', 'file'],
+            'photo_path' => ['required', 'string', 'max:255'],
             'full_name' => ['required', 'string', 'max:255'],
             'phone' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10'],
             'email' => ['required', 'email'],
@@ -38,10 +38,10 @@ class ResumeRequest extends FormRequest
             'education' => ['required', 'array', 'min:1'],
             'education.*.id' => ['nullable', 'exists:education,id'],
             'education.*.level' => ['required', 'in:middle,middleSpec,semiHigh,universe'],
-            'education.*.institution' => ['required', 'string', 'max:255'],
-            'education.*.faculty' => ['required', 'string', 'max:255'],
-            'education.*.specialization' => ['required', 'string', 'max:255'],
-            'education.*.end_year' => ['required', 'integer', 'min:1950', 'max:'.date('Y')],
+            'education.*.institution' => ['nullable', 'string', 'max:255'],
+            'education.*.faculty' => ['nullable', 'string', 'max:255'],
+            'education.*.specialization' => ['nullable', 'string', 'max:255'],
+            'education.*.end_year' => ['nullable', 'integer', 'min:1950', 'max:'.date('Y')],
         ];
     }
 
@@ -64,7 +64,7 @@ class ResumeRequest extends FormRequest
             'email' => 'Еmail',
             'profession' => 'Профессия',
             'city' => 'Город',
-            'photo' => 'Фото',
+            'photo_path' => 'Фото',
             'full_name' => 'Полное имя',
             'phone' => 'Телефон',
             'birthdate' => 'Дата рождения',

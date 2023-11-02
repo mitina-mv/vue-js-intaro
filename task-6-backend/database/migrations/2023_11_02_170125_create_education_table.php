@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('education', function (Blueprint $table) {
             $table->id();
             $table->enum('level', ['middle', 'middleSpec', 'semiHigh', 'universe']);
-            $table->string('institution');
-            $table->string('faculty');
-            $table->string('specialization');
-            $table->integer('end_year');
+            $table->string('institution')->nullable();
+            $table->string('faculty')->nullable();
+            $table->string('specialization')->nullable();
+            $table->integer('end_year')->nullable();
             $table->foreignId('resume_id')
                 ->constrained('resumes');
         });

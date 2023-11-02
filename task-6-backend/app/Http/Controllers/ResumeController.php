@@ -32,6 +32,8 @@ class ResumeController extends Controller
         $data = $request->validated();
         unset($data['education']);
 
+        // TODO сохранение в стор фотки
+
         $resume = Resume::create($data);
 
         $educations = [];
