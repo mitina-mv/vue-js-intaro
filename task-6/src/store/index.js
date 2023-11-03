@@ -40,13 +40,17 @@ export const store = createStore({
         },
 
         UPDATE_STATUS_RESUME: async (context, payload) => {
-            context.commit("REMOVE_RESUME", payload.id);
+            context.commit("REMOVE_RESUME", payload.element.id);
+            payload.element.status = payload.status;
+            context.commit("ADD_RESUME", payload.element);
 
-            let { data } = await axios.post(
-                "http://localhost:8000/api/cv/" + payload.id + "/status",
-                payload
+            await axios.post(
+                "http://localhost:8000/api/cv/" + payload.element.id + "/status",
+                {
+                    id: payload.element.id,
+                    status: payload.status
+                }
             );
-            context.commit("ADD_RESUME", data);
         },
     },
 });

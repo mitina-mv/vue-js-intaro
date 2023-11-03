@@ -1,5 +1,5 @@
 <template>
-    <h3 class="col-header" :class="'col-header_' + status">бее ({{ section.length }})</h3>
+    <h3 class="col-header" :class="'col-header_' + status">{{ name }} ({{ section.length }})</h3>
     <draggable
         class="list-group gap-1"
         v-model="section"
@@ -37,6 +37,9 @@ export default {
     props: {
         status: {
             type: String
+        },
+        name: {
+            type: String
         }
     },
     methods: {
@@ -64,32 +67,30 @@ export default {
             }
         },
     log: function(evt) {
-      window.console.log(evt);
+        if(evt.added){
+            this.$store.dispatch('UPDATE_STATUS_RESUME', {
+                element: evt.added.element,
+                status: this.status
+            });
+        }
+        if(evt.removed) {
+
+        }
     },
     },
     computed: {
-        section: {
-            get() {
-                let resumes = this.$store.getters.RESUMES;
-                let result = [];
-                
-                for(let key in resumes)
-                {
-                    let item = resumes[key];
-                    if(item.status == this.status)
-                        result.push(item);
-                }
-
-                return result;
-            }, 
-            set(value) {
-                if(value.length == 0) return;
-                console.log(this.$store.getters.RESUMES);
-                this.$store.dispatch('UPDATE_STATUS_RESUME', {
-                    id: value[0].id,
-                    status: this.status
-                });
+        section() {
+            let resumes = this.$store.getters.RESUMES;
+            let result = [];
+            
+            for(let key in resumes)
+            {
+                let item = resumes[key];
+                if(item.status == this.status)
+                    result.push(item);
             }
+
+            return result;
         }
     }
 };

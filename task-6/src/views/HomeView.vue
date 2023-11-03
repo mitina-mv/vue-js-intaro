@@ -2,8 +2,8 @@
     <div class="container">
         <h1>главная страница</h1>
         <div class="row">
-            <div v-for="status in statuses" :key="status" class="col-4 gap-1 drag-drop-col">
-                <DragDropColumn :status="status" />
+            <div v-for="(name, status) in statuses" :key="status" class="col-4 gap-1 drag-drop-col">
+                <DragDropColumn :status="status" :name="name" />
             </div>
         </div>
     </div>
@@ -15,50 +15,16 @@ export default {
     name: "HomeView",
     data() {
         return {
-            statuses: ['new', 'interview', 'adopted', 'refused']
-
+            statuses: {
+                new: 'Новое',
+                interview: 'Собеседование',
+                adopted: 'Отказ',
+                refused: 'Принят'
+            }
         }
     },
     components: {DragDropColumn},
     computed: {
-        // resumes: {
-        //     get() {
-        //         let resumes = this.$store.getters.RESUMES;
-        //         let statuslist = {
-        //             new: {
-        //                 name: 'Новое',
-        //                 list: []
-        //             },
-        //             interview: {
-        //                 name: 'Собеседование',
-        //                 list: []
-        //             },
-        //             adopted: {
-        //                 name: 'Отказ',
-        //                 list: []
-        //             },
-        //             refused: {
-        //                 name: 'Принят',
-        //                 list: []
-        //             }
-        //         }
-        //         for(let key in resumes)
-        //         {
-        //             let item = resumes[key];
-        //             statuslist[item.status].list.push(item);
-        //         }
-        //         console.log('sdfklj');
-
-        //         return statuslist;
-        //     },
-        //     set(value) {
-        //         console.log(value);
-        //         this.$store.commit('UDDATE_STATUS_RESUME', {
-        //             id: value.id,
-        //             status: value.status
-        //         })
-        //     }
-        // },
     }
 };
 </script>
