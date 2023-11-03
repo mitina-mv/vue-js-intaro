@@ -90,5 +90,9 @@ class ResumeController extends Controller
         $resume->update([
             'status' => $request->status
         ]);
+        return response()->json(
+            $resume->toArray(),
+            Response::HTTP_OK
+        );
     }
 }

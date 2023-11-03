@@ -83,6 +83,8 @@ export default {
                 return result;
             }, 
             set(value) {
+                if(value.length == 0) return;
+                console.log(this.$store.getters.RESUMES);
                 this.$store.dispatch('UPDATE_STATUS_RESUME', {
                     id: value[0].id,
                     status: this.status
