@@ -15,33 +15,43 @@ export default {
     name: "HomeView",
     components: {DragDropColumn},
     computed: {
-        resumes() {
-            let resumes = this.$store.getters.RESUMES;
-            let statuslist = {
-                new: {
-                    name: 'Новое',
-                    list: []
-                },
-                interview: {
-                    name: 'Собеседование',
-                    list: []
-                },
-                adopted: {
-                    name: 'Отказ',
-                    list: []
-                },
-                refused: {
-                    name: 'Принят',
-                    list: []
+        resumes: {
+            get() {
+                let resumes = this.$store.getters.RESUMES;
+                let statuslist = {
+                    new: {
+                        name: 'Новое',
+                        list: []
+                    },
+                    interview: {
+                        name: 'Собеседование',
+                        list: []
+                    },
+                    adopted: {
+                        name: 'Отказ',
+                        list: []
+                    },
+                    refused: {
+                        name: 'Принят',
+                        list: []
+                    }
                 }
-            }
-            for(let key in resumes)
-            {
-                let item = resumes[key];
-                statuslist[item.status].list.push(item);
-            }
+                for(let key in resumes)
+                {
+                    let item = resumes[key];
+                    statuslist[item.status].list.push(item);
+                }
+                console.log('sdfklj');
 
-            return statuslist;
+                return statuslist;
+            },
+            set(value) {
+                console.log(value);
+                this.$store.commit('UDDATE_STATUS_RESUME', {
+                    id: value.id,
+                    status: value.status
+                })
+            }
         },
     }
 };

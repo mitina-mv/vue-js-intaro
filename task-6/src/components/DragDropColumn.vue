@@ -2,8 +2,8 @@
     <h3 class="col-header" :class="'col-header_' + groupName">{{ section.name }} ({{ section.list.length }})</h3>
     <draggable
         class="list-group gap-1"
-        :list="section.list"
-        :group="groupName"
+        v-model="section.list"
+        group="resume"
         itemKey="id"
         @change="log"
     >
@@ -13,6 +13,7 @@
                 <div class="info">
                     <div class="name">{{ element.full_name }}</div>
                     <div class="profession">{{ element.profession }}</div>
+                    <div class="age">{{ calculateAge(element.birthdate) }}</div>
                     <div class="skills">
                         <template v-for="(still, ind) in element.skills.slice(0, 3)" :key="ind">
                             <Chip :label="still" />
@@ -27,11 +28,13 @@
 <script>
 import draggable from "vuedraggable";
 import Chip from 'primevue/chip';
+import Badge from 'primevue/badge';
 export default {
     name: "DragDropColumn",
     components: {
         draggable,
         Chip,
+        Badge,
     },
     props: {
         section: {
@@ -41,13 +44,44 @@ export default {
             type: String
         }
     },
+    methods: {
+        calculateAge (age){
+            let birthDate = new Date(age);
+            let otherDate = new Date();
+            let years = (otherDate.getFullYear() - birthDate.getFullYear());
+            if (otherDate.getMonth() < birthDate.getMonth() ||
+                otherDate.getMonth() == birthDate.getMonth() && otherDate.getDate() < birthDate.getDate()) {
+                years--;
+            }
+
+            const declension = ['год', 'года', 'лет'];
+            const lastDigit = years % 10;
+            const lastTwoDigits = years % 100;
+
+            if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+                return years + ' ' + declension[2];
+            } else if (lastDigit === 1) {
+                return years + ' ' + declension[0];
+            } else if (lastDigit >= 2 && lastDigit <= 4) {
+                return years + ' ' + declension[1];
+            } else {
+                return years + ' ' + declension[2];
+            }
+        },
+    log: function(evt) {
+      window.console.log(evt);
+    },
+    },
+    computed: {
+        
+    }
 };
 </script>
 
 <style scoped>
 .list-group {
     display: grid;
-  min-height: 80vh;
+  min-height: 69vh;
   align-content: flex-start;
   padding: 1em 0.5em;
 }
@@ -75,7 +109,7 @@ export default {
   display: grid;
   gap: .35em;
 }
-.profession {
+.profession, .age {
   font-size: .8em;
   color: var(--bluegray-600);
 }
