@@ -11,7 +11,7 @@
             <div class="list-group-item">
                 <div class="photo" :style="'background-image: url(' + element.photo_path + ');'"></div>
                 <div class="info">
-                    <div class="name">{{ element.full_name }}</div>
+                    <router-link :to="'/' + element.id" class="name">{{ element.full_name }}</router-link>
                     <div class="profession">{{ element.profession }}</div>
                     <div class="age">{{ calculateAge(element.birthdate) }}</div>
                     <div class="skills">
@@ -122,6 +122,10 @@ export default {
   word-break: break-word;
   font-weight: bolder;
   color: var(--bluegray-800);
+  text-decoration: none;
+}
+.name:hover {
+    color:var(--primary-color);
 }
 .info {
   display: grid;
