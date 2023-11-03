@@ -71,23 +71,23 @@ export const store = createStore({
             let { data } = await axios.get("http://localhost:8000/api/cv");
             context.commit("SET_RESUME", data.items);
 
-            let statuslist = {
-                new: [],
-                interview: [],
-                adopted: [],
-                refused:[]
-            }
+            // let statuslist = {
+            //     new: [],
+            //     interview: [],
+            //     adopted: [],
+            //     refused:[]
+            // }
 
-            for(let key in data)
-            {
-                let item = data[key];
-                statuslist[item.status].push(item);
-            }
+            // for(let key in data)
+            // {
+            //     let item = data[key];
+            //     statuslist[item.status].push(item);
+            // }
             
-            context.commit("SET_NEW", statuslist.new);
-            context.commit("SET_INTERVIEW", statuslist.interview);
-            context.commit("SET_ADOPTED", statuslist.adopted);
-            context.commit("SET_REFUSED", statuslist.refused);
+            // context.commit("SET_NEW", statuslist.new);
+            // context.commit("SET_INTERVIEW", statuslist.interview);
+            // context.commit("SET_ADOPTED", statuslist.adopted);
+            // context.commit("SET_REFUSED", statuslist.refused);
         },
 
         SAVE_RESUME: async (context, payload) => {

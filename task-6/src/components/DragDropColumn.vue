@@ -1,8 +1,8 @@
 <template>
-    <h3 class="col-header" :class="'col-header_' + groupName">{{ section.name }} ({{ section.list.length }})</h3>
+    <h3 class="col-header" :class="'col-header_' + status">бее ({{ section.length }})</h3>
     <draggable
         class="list-group gap-1"
-        v-model="section.list"
+        v-model="section"
         group="resume"
         itemKey="id"
         @change="log"
@@ -28,19 +28,14 @@
 <script>
 import draggable from "vuedraggable";
 import Chip from 'primevue/chip';
-import Badge from 'primevue/badge';
 export default {
     name: "DragDropColumn",
     components: {
         draggable,
         Chip,
-        Badge,
     },
     props: {
-        section: {
-            type: Object,
-        },
-        groupName: {
+        status: {
             type: String
         }
     },
@@ -73,7 +68,27 @@ export default {
     },
     },
     computed: {
-        
+        section: {
+            get() {
+                let resumes = this.$store.getters.RESUMES;
+                let result = [];
+                
+                for(let key in resumes)
+                {
+                    let item = resumes[key];
+                    if(item.status == this.status)
+                        result.push(item);
+                }
+
+                return result;
+            }, 
+            set(value) {
+                this.$store.dispatch('UPDATE_STATUS_RESUME', {
+                    id: value[0].id,
+                    status: this.status
+                });
+            }
+        }
     }
 };
 </script>
