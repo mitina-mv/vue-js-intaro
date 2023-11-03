@@ -24,7 +24,12 @@ export const router = createRouter({
     path: '/:id',
     component: ShowView,
     name: 'show',
-  }
+  },
+//   {
+//     path: '/:pathMatch(.*)*',
+//     name: '404',
+//     component: NotFoundView
+//   }
 ],
   history: createWebHistory()
 })

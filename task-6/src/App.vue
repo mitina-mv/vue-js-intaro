@@ -5,8 +5,8 @@
 
 <script>
 import ResumeMenu from './components/ResumeMenu';
-import { useRouter, useRoute } from "vue-router";
-import { ref } from "vue";
+// import { useRouter, useRoute } from "vue-router";
+import { ref, onMounted } from "vue";
 
 export default {
     name: "App",
@@ -15,14 +15,17 @@ export default {
     },
 
     setup() {
-        const router = useRouter();
-        const route = useRoute();
+        // const router = useRouter();
+        // const route = useRoute();
 
-        return {
-            router,
-            route
-        };
+        // return {
+        //     router,
+        //     route
+        // };
     },
+    mounted() {
+        this.$store.dispatch('GET_RESUME');
+    }
 };
 </script>
 
