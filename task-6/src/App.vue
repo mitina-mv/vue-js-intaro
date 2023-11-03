@@ -6,7 +6,7 @@
 <script>
 import ResumeMenu from './components/ResumeMenu';
 // import { useRouter, useRoute } from "vue-router";
-import { ref, onMounted } from "vue";
+// import { ref, onMounted } from "vue";
 
 export default {
     name: "App",

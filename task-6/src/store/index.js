@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createStore } from "vuex";
 import axios from 'axios';
 
@@ -24,7 +25,7 @@ export const store = createStore({
     actions: {
         GET_RESUME: async (context, payload) => {
             let {data} = await axios.get('http://localhost:8000/api/cv');
-            context.commit('SET_RESUME', data);
+            context.commit('SET_RESUME', data.items);
         },
     
         SAVE_RESUME: async (context, payload) => {
