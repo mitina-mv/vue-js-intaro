@@ -26,6 +26,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import draggable from "vuedraggable";
 import Chip from 'primevue/chip';
 export default {

@@ -5,8 +5,10 @@
         class="flex flex-column gap-4"
     >
         <template v-for="(item, key) in values" :key="key">
-
             <template v-if="Array.isArray(item)">
+                <template v-for="(itemtwo, keytwo) in item" :key="keytwo">
+
+                </template>
             </template>
 
             <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'text'">
@@ -52,10 +54,10 @@
             </div>
 
             <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'chips'">
-                <label :for="key">{{ fields[key]['title'] }}</label>
+                <label :for="key">{{ fields[key]['title'] }} {{ key }}</label>
                 <Chips
                     :id="key"
-                    v-model="values[key]"
+                    v-model="values['skills']"
                     separator=","
                     :aria-describedby="key + '-help'"
                 />
@@ -65,7 +67,15 @@
                 <small class="p-error">{{ errors[key] ? errors[key][0] : "&nbsp;" }}</small>
             </div>
 
+            <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'filter-select'">
+                <label :for="key">{{ fields[key]['title'] }} {{ key }}</label>
+                <Dropdown :id="key" v-model="values[key]" :options="cities" showClear filter optionLabel="name" placeholder="Введите для поиска..." @filter="getOptionsList($event, key)" />
+                <small class="p-error">{{ errors[key] ? errors[key][0] : "&nbsp;" }}</small>
+            </div>
         </template>
+
+        {{ values['skills'] }}
+        <Chips v-model="values['skills']" separator=","  />
     </form>
 </template>
 
@@ -74,12 +84,13 @@ import InputMask from "primevue/inputmask";
 import InputText from "primevue/inputtext";
 import Dropdown from 'primevue/dropdown';
 import Editor from 'primevue/editor';
-import Chips from "primevue/chips";
+import Chips from 'primevue/chips';
 
 export default {
     data() {
         return {
             errors: {},
+            cities: null,
             fields: {
                 profession: {
                     title: "Профессия",
@@ -226,6 +237,13 @@ export default {
         Editor,
         Chips,
     },
+
+    methods: {
+        getOptionsList(event, key){
+            console.log(key);
+            console.log(event.value);
+        }
+    }
 };
 </script>
 
