@@ -23,6 +23,19 @@
 
             <div
                 class="flex flex-column gap-2"
+                v-else-if="fields[key]['type'] == 'email'"
+            >
+                <FieldText
+                    :editValue="values[key]"
+                    :fieldName="key"
+                    :title="fields[key]['title']"
+                    :error="errors[key]"
+                    @update:editValue="updateValue"
+                />
+            </div>
+
+            <div
+                class="flex flex-column gap-2"
                 v-else-if="fields[key]['type'] == 'date'"
             >
                 <FieldCalendar
@@ -233,7 +246,7 @@ export default {
                 },
                 end_year: {
                     title: "Год окончания",
-                    inputType: "number",
+                    type: "year",
                 },
             },
             values: {
