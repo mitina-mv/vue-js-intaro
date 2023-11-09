@@ -1,31 +1,31 @@
 <template>
     <label :for="fieldName">{{ title }}</label>
-    <InputMask
-        :id="fieldName"
-        v-model="modelValue"        
-        :mask="mask"
-        :placeholder="mask"
+    <Calendar
+        v-model="modelValue"
+        showIcon
+        dateFormat="dd.mm.yy"
         :class="{ 'p-invalid': error }"
+        :id="fieldName"
     />
+    
     <small class="p-error">{{
         error ? error[0] : "&nbsp;"
     }}</small>
 </template>
 
 <script>
-import InputMask from "primevue/inputmask";
+import Calendar from "primevue/calendar";
 
 export default {
-    name: 'FieldMask',
+    name: "FieldCalendar",
     components: {
-        InputMask,
-    },
+        Calendar,
+    },    
     props: {        
         editValue: String,
         fieldName: String,
         title: String,
-        error: Array,
-        mask: String
+        error: Array
     },
     emits: ['update:editValue'],
     computed: {
@@ -38,9 +38,7 @@ export default {
                 }
             }
     },
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

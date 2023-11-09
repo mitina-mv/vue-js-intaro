@@ -1,31 +1,30 @@
 <template>
     <label :for="fieldName">{{ title }}</label>
-    <InputMask
+    <Dropdown
         :id="fieldName"
-        v-model="modelValue"        
-        :mask="mask"
-        :placeholder="mask"
-        :class="{ 'p-invalid': error }"
+        v-model="modelValue"
+        :options="options"
+        optionLabel="name"
+        optionValue="code"
+        placeholder="Выберите..."
     />
-    <small class="p-error">{{
-        error ? error[0] : "&nbsp;"
-    }}</small>
+    <small class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
 </template>
 
 <script>
-import InputMask from "primevue/inputmask";
+import Dropdown from 'primevue/dropdown';
 
 export default {
-    name: 'FieldMask',
+    name: 'DropdownSimple',
     components: {
-        InputMask,
+        Dropdown,
     },
     props: {        
         editValue: String,
         fieldName: String,
         title: String,
         error: Array,
-        mask: String
+        options: Array
     },
     emits: ['update:editValue'],
     computed: {
@@ -38,9 +37,7 @@ export default {
                 }
             }
     },
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

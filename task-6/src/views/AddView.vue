@@ -1,9 +1,6 @@
 <template>
     <h1>форма добавления</h1>
-    <form
-        @submit.prevent="create"
-        class="flex flex-column gap-4"
-    >
+    <form @submit.prevent="create" class="flex flex-column gap-4">
         <template v-for="(item, key) in values" :key="key">
             <template v-if="key == 'education'">
                 <template v-for="(itemtwo, keytwo) in item" :key="keytwo">
@@ -11,59 +8,114 @@
                 </template>
             </template>
 
-            <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'text'">
-                <FieldText :editValue="values[key]" :fieldName="key" :title="fields[key]['title']" :error="errors[key]" @update:editValue="updateValue" />
+            <div
+                class="flex flex-column gap-2"
+                v-else-if="fields[key]['type'] == 'text'"
+            >
+                <FieldText
+                    :editValue="values[key]"
+                    :fieldName="key"
+                    :title="fields[key]['title']"
+                    :error="errors[key]"
+                    @update:editValue="updateValue"
+                />
             </div>
 
-            <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'mask'">
-                <label :for="key">{{ fields[key]['title'] }}</label>
-                <InputMask
+            <div
+                class="flex flex-column gap-2"
+                v-else-if="fields[key]['type'] == 'date'"
+            >
+                <FieldCalendar
+                    :editValue="values[key]"
+                    :fieldName="key"
+                    :title="fields[key]['title']"
+                    :error="errors[key]"
+                    @update:editValue="updateValue"
+                />
+            </div>
+
+            <div
+                class="flex flex-column gap-2"
+                v-else-if="fields[key]['type'] == 'mask'"
+            >
+                <FieldMask
+                    :editValue="values[key]"
+                    :fieldName="key"
+                    :title="fields[key]['title']"
+                    :error="errors[key]"
+                    @update:editValue="updateValue"
+                    :mask="fields[key]['mask']"
+                />
+            </div>
+
+            <div
+                class="flex flex-column gap-2"
+                v-else-if="fields[key]['type'] == 'select'"
+            >
+                <DropdownSimple
+                    :editValue="values[key]"
+                    :fieldName="key"
+                    :title="fields[key]['title']"
+                    :error="errors[key]"
+                    @update:editValue="updateValue"
+                    :options="fields[key]['optionsList']"
+                />
+            </div>
+
+            <div
+                class="flex flex-column gap-2"
+                v-else-if="fields[key]['type'] == 'editor'"
+            >
+                <label :for="key">{{ fields[key]["title"] }}</label>
+                <Editor
                     :id="key"
                     v-model="values[key]"
-                    :mask="fields[key]['mask']"
-                    :placeholder="fields[key]['mask']"
-                    :class="{ 'p-invalid': errors[key] }"
+                    editorStyle="height: 220px"
                 />
                 <small class="p-error">{{
                     errors[key] ? errors[key][0] : "&nbsp;"
                 }}</small>
             </div>
 
-            <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'select'">
-                <label :for="key">{{ fields[key]['title'] }}</label>
-                <Dropdown :id="key" v-model="values[key]" :options="fields[key]['optionsList']" optionLabel="name" optionValue="code" placeholder="Выберите..." />
-                <small class="p-error">{{
-                    errors[key] ? errors[key][0] : "&nbsp;"
-                }}</small>
+            <div
+                class="flex flex-column gap-2"
+                v-else-if="fields[key]['type'] == 'chips'"
+            >
+                <FieldChips
+                    :editValue="values[key]"
+                    :fieldName="key"
+                    :title="fields[key]['title']"
+                    :error="errors[key]"
+                    @update:editValue="updateValue"
+                />
             </div>
 
-            <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'editor'">
-                <label :for="key">{{ fields[key]['title'] }}</label>
-                <Editor :id="key" v-model="values[key]" editorStyle="height: 220px" />
-                <small class="p-error">{{
-                    errors[key] ? errors[key][0] : "&nbsp;"
-                }}</small>
-            </div>
-
-            <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'chips'">
-                <FieldChips :editValue="values[key]" :fieldName="key" :title="fields[key]['title']" :error="errors[key]" @update:editValue="updateValue" />
-            </div>
-
-            <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'filter-select'">
-                <label :for="key">{{ fields[key]['title'] }} {{ key }}</label>
-                <Dropdown :id="key" v-model="values[key]" :options="fields[key]['optionsList']" showClear filter optionLabel="name" placeholder="Введите для поиска..." @filter="getOptionsList($event, key)" />
-                <small class="p-error">{{ errors[key] ? errors[key][0] : "&nbsp;" }}</small>
+            <div
+                class="flex flex-column gap-2"
+                v-else-if="fields[key]['type'] == 'filter-select'"
+            >
+                <DropdownSearcher
+                    :editValue="values[key]"
+                    :fieldName="key"
+                    :title="fields[key]['title']"
+                    :error="errors[key]"
+                    @update:editValue="updateValue"
+                    :options="fields[key]['optionsList']"
+                    @filter="getOptionsList"
+                />
             </div>
         </template>
     </form>
 </template>
 
 <script>
-import InputMask from "primevue/inputmask";
-import Dropdown from 'primevue/dropdown';
-import Editor from 'primevue/editor';
+import Editor from "primevue/editor";
 import FieldChips from "@/components/fields/FieldChips.vue";
-import FieldText from '@/components/fields/FieldText.vue';
+import FieldText from "@/components/fields/FieldText.vue";
+import FieldMask from "@/components/fields/FieldMask.vue";
+import DropdownSimple from "@/components/fields/DropdownSimple.vue";
+import DropdownSearcher from '@/components/fields/DropdownSearcher.vue';
+import FieldCalendar from '@/components/fields/FieldCalendar.vue';
 
 export default {
     data() {
@@ -73,11 +125,11 @@ export default {
             fields: {
                 profession: {
                     title: "Профессия",
-                    type: 'text',
-                },                
+                    type: "text",
+                },
                 full_name: {
                     title: "ФИО",
-                    type: 'text',
+                    type: "text",
                 },
                 city: {
                     title: "Город",
@@ -92,8 +144,8 @@ export default {
                 },
                 phone: {
                     title: "Телефон",
-                    type: 'mask',
-                    mask: '+7 (999) 999-99-99'
+                    type: "mask",
+                    mask: "+7 (999) 999-99-99",
                 },
                 email: {
                     title: "Email",
@@ -101,7 +153,7 @@ export default {
                 },
                 birthdate: {
                     title: "Дата рождения",
-                    type: 'date',
+                    type: "date",
                 },
                 salary: {
                     title: "Желаемая зарплата",
@@ -109,7 +161,7 @@ export default {
                 },
                 skills: {
                     title: "Ключевые навыки",
-                    type: 'chips'
+                    type: "chips",
                 },
                 work_schedule: {
                     title: "График работы",
@@ -117,23 +169,23 @@ export default {
                     optionsList: [
                         {
                             name: "Полный день",
-                            code: 'full'
+                            code: "full",
                         },
                         {
                             name: "Гибкий график",
-                            code: 'flexible'
+                            code: "flexible",
                         },
                         {
                             name: "Сменный график",
-                            code: 'shift'
+                            code: "shift",
                         },
                         {
                             name: "Удаленная работа",
-                            code: 'remote'
+                            code: "remote",
                         },
                         {
                             name: "Вахтовый метод",
-                            code: 'watch'
+                            code: "watch",
                         },
                     ],
                     default: "full",
@@ -148,19 +200,19 @@ export default {
                     optionsList: [
                         {
                             name: "Среднее",
-                            code: 'middle'
+                            code: "middle",
                         },
                         {
                             name: "Среднее специальное",
-                            code: 'middleSpec'
+                            code: "middleSpec",
                         },
                         {
                             name: "Неоконченное высшее",
-                            code: 'semiHigh'
+                            code: "semiHigh",
                         },
                         {
                             name: "Высшее",
-                            code: 'universe'
+                            code: "universe",
                         },
                     ],
                     default: "middle",
@@ -203,30 +255,32 @@ export default {
                         institution: null,
                         faculty: null,
                         end_year: null,
-                    }
+                    },
                 ],
-            }
+            },
         };
     },
 
     components: {
-        InputMask,
+        FieldMask,
         FieldText,
-        Dropdown,
+        DropdownSimple,
         Editor,
         FieldChips,
+        DropdownSearcher,
+        FieldCalendar,
     },
 
     methods: {
-        getOptionsList(event, key){
+        getOptionsList(event, key) {
             console.log(key);
             console.log(event.value);
             console.log(this.values);
         },
         updateValue(newValue, fieldName) {
             this.values[fieldName] = newValue;
-        }
-    }
+        },
+    },
 };
 </script>
 
