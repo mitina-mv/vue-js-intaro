@@ -69,7 +69,7 @@
 
             <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'filter-select'">
                 <label :for="key">{{ fields[key]['title'] }} {{ key }}</label>
-                <Dropdown :id="key" v-model="values[key]" :options="cities" showClear filter optionLabel="name" placeholder="Введите для поиска..." @filter="getOptionsList($event, key)" />
+                <Dropdown :id="key" v-model="values[key]" :options="fields[key]['optionsList']" showClear filter optionLabel="name" placeholder="Введите для поиска..." @filter="getOptionsList($event, key)" />
                 <small class="p-error">{{ errors[key] ? errors[key][0] : "&nbsp;" }}</small>
             </div>
         </template>
@@ -214,7 +214,7 @@ export default {
                 email: null,
                 birthdate: null,
                 salary: null,
-                skills: null,
+                skills: [],
                 work_schedule: null,
                 about: null,
                 education: [
