@@ -86,6 +86,11 @@ export const store = createStore({
             context.commit("SET_RESUME", data.items);
         },
 
+        GET_DETAIL_RESUME: async (context, payload) => {
+            let { data } = await axios.get("http://localhost:8000/api/cv/" + payload.element.id);
+            context.commit("SET_RESUME_DETAIL", data);
+        },
+
         SAVE_RESUME: async (context, payload) => {
             let { data } = await axios.post(
                 "http://localhost:8000/api/cv",
@@ -105,6 +110,12 @@ export const store = createStore({
                     id: payload.element.id,
                     status: payload.status
                 }
+            );
+        },
+        UPDATE_RESUME: async (context, payload) => {
+
+            await axios.post(
+                "http://localhost:8000/api/cv/" + payload.element.id, payload.element
             );
         },
     },

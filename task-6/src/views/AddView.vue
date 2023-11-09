@@ -5,22 +5,14 @@
         class="flex flex-column gap-4"
     >
         <template v-for="(item, key) in values" :key="key">
-            <template v-if="Array.isArray(item)">
+            <template v-if="key == 'education'">
                 <template v-for="(itemtwo, keytwo) in item" :key="keytwo">
-
+                    <!-- TODO отрисовка образования -->
                 </template>
             </template>
 
             <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'text'">
-                <label :for="key">{{ fields[key]['title'] }}</label>
-                <InputText
-                    :id="key"
-                    v-model="values[key]"
-                    :class="{ 'p-invalid': errors[key] }"
-                />
-                <small class="p-error">{{
-                    errors[key] ? errors[key][0] : "&nbsp;"
-                }}</small>
+                <FieldText :editValue="values[key]" :fieldName="key" :title="fields[key]['title']" :error="errors[key]" @update:editValue="updateValue" />
             </div>
 
             <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'mask'">
@@ -54,17 +46,7 @@
             </div>
 
             <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'chips'">
-                <label :for="key">{{ fields[key]['title'] }} {{ key }}</label>
-                <Chips
-                    :id="key"
-                    v-model="values['skills']"
-                    separator=","
-                    :aria-describedby="key + '-help'"
-                />
-                <small :id="key + '-help'">{{
-                    errors[key] ? "&nbsp;" : 'Вводить через ","'
-                }}</small>
-                <small class="p-error">{{ errors[key] ? errors[key][0] : "&nbsp;" }}</small>
+                <FieldChips :editValue="values[key]" :fieldName="key" :title="fields[key]['title']" :error="errors[key]" @update:editValue="updateValue" />
             </div>
 
             <div class="flex flex-column gap-2" v-else-if="fields[key]['type'] == 'filter-select'">
@@ -73,18 +55,15 @@
                 <small class="p-error">{{ errors[key] ? errors[key][0] : "&nbsp;" }}</small>
             </div>
         </template>
-
-        {{ values['skills'] }}
-        <Chips v-model="values['skills']" separator=","  />
     </form>
 </template>
 
 <script>
 import InputMask from "primevue/inputmask";
-import InputText from "primevue/inputtext";
 import Dropdown from 'primevue/dropdown';
 import Editor from 'primevue/editor';
-import Chips from 'primevue/chips';
+import FieldChips from "@/components/fields/FieldChips.vue";
+import FieldText from '@/components/fields/FieldText.vue';
 
 export default {
     data() {
@@ -232,16 +211,20 @@ export default {
 
     components: {
         InputMask,
-        InputText,
+        FieldText,
         Dropdown,
         Editor,
-        Chips,
+        FieldChips,
     },
 
     methods: {
         getOptionsList(event, key){
             console.log(key);
             console.log(event.value);
+            console.log(this.values);
+        },
+        updateValue(newValue, fieldName) {
+            this.values[fieldName] = newValue;
         }
     }
 };
