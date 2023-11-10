@@ -35,8 +35,6 @@ export default {
             },
         };
     },
-
-    
     mounted() {
     },
 
@@ -46,8 +44,7 @@ export default {
 
     methods: {        
         storeResume(resume)
-        {
-            console.log(resume);           
+        {      
             this.$store.dispatch('SAVE_RESUME', resume);   
         }
     },

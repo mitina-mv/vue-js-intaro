@@ -31,9 +31,10 @@
                         v-for="(eduItem, keyItem) in education"
                         :key="keyItem"
                     >
+                        <template v-if="!fields[keyItem]"></template>
                         <div
                             class="flex flex-column gap-2"
-                            v-if="
+                            v-else-if="
                                 fields[keyItem]['type'] == 'text' &&
                                 ((education['level'] &&
                                     education['level'] !== 'middle') ||
@@ -116,6 +117,8 @@
                     </template>
                 </template>
             </template>
+
+            <template v-else-if="!fields[key]"></template>
 
             <div
                 class="flex flex-column gap-2"
@@ -286,7 +289,6 @@ export default {
             institutionList: null,
             facultyList: null,
             fields: fields,
-            values: this.resume,
         };
     },
 
@@ -295,8 +297,14 @@ export default {
     emits: ['saveResume'],
 
     async mounted() {
+        console.log(this.values);
         let countryCode = 1;
-        let q = `countryCode=${countryCode}&apiKey=${API_KEY}&need_all=0&q=`;
+        let q = `countryCode=${countryCode}&apiKey=${API_KEY}&need_all=0`
+
+        if(this.values.city)
+        {
+            q += `&q=${this.values.city}`
+        }
 
         let data = await this.getRequest(`http://localhost:3000/cities?${q}`);
 
@@ -324,14 +332,7 @@ export default {
 
             switch (key) {
                 case "city": {
-                    let q = `countryCode=${countryCode}&apiKey=${API_KEY}&need_all=0&q=${event.value}`;
-                    let data = await this.getRequest(
-                        `http://localhost:3000/cities?${q}`
-                    );
-
-                    if (data) {
-                        this.fields.city.optionsList = data.items;
-                    }
+                    this.getCities(event.value);
                     break;
                 }
 
@@ -349,6 +350,17 @@ export default {
                     }
                     break;
                 }
+            }
+        },
+        async getCities(q){
+            let countryCode = 1;
+            let query = `countryCode=${countryCode}&apiKey=${API_KEY}&need_all=0&q=${q}`;
+            let data = await this.getRequest(
+                `http://localhost:3000/cities?${query}`
+            );
+
+            if (data) {
+                this.fields.city.optionsList = data.items;
             }
         },
         updateValue(newValue, fieldName) {
@@ -447,6 +459,12 @@ export default {
                     },
                 ],
             };
+        }
+    },
+    
+    computed: {
+        values(){
+            return this.resume
         }
     },
 };
