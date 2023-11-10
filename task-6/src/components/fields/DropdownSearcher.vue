@@ -9,7 +9,7 @@
         placeholder="Введите для поиска..."
         showClear
         filter
-        @filter="$emit('filter', $event, fieldName)"
+        @filter="$emit('filter', $event, fieldName, (index !== null ? index : null))"
     />
     <small class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
 </template>
@@ -27,7 +27,8 @@ export default {
         fieldName: String,
         title: String,
         error: Array,
-        options: Array
+        options: Array,
+        index: Number
     },
     emits: ['update:editValue', 'filter'],
     computed: {
@@ -36,7 +37,15 @@ export default {
                     return this.editValue
                 },
                 set(newValue) {
-                    this.$emit('update:editValue', newValue, this.fieldName)
+                    if(this.fieldName == 'institution') {
+                        let id = this.options.find((item) => item.title == newValue)
+                        this.$emit('update:editValue', newValue, this.index, id.id);
+                    }
+                    else if(this.index !== null){
+                        this.$emit('update:editValue', newValue, this.fieldName, this.index)
+                    }
+                    else 
+                        this.$emit('update:editValue', newValue, this.fieldName)
                 }
             }
     },

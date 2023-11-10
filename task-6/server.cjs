@@ -31,9 +31,17 @@ app.get("/cities", async (req, res) => {
 
 app.get("/universe", async (req, res) => {
     try {
-        const response = await axios.get(
-            `https://api.vk.com/method/database.getUniversities?access_token=${req.query.apiKey}&v=5.154&country_id=${req.query.countryCode}&lang=0&city_id=${req.query.cityId}&q=${req.query.q}`
-        );
+        
+        let response = null;
+        if(req.query.q) {
+            response = await axios.get(
+                `https://api.vk.com/method/database.getUniversities?access_token=${req.query.apiKey}&v=5.154&country_id=${req.query.countryCode}&lang=0&q=${req.query.q}`
+            );
+        } else {
+            response = await axios.get(
+                `https://api.vk.com/method/database.getUniversities?access_token=${req.query.apiKey}&v=5.154&country_id=${req.query.countryCode}&lang=0`
+            );
+        }
         // Переслать ответ от VK API на клиент
         res.json(response.data);
     } catch (error) {

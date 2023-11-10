@@ -1,7 +1,7 @@
 <template>
     <label :for="fieldName">{{ title }}</label>
     <Calendar
-        v-model="editValue"
+        v-model="modelValue"
         view="year"
         dateFormat="yy"
         :class="{ 'p-invalid': error }"
@@ -24,6 +24,7 @@ export default {
         fieldName: String,
         title: String,
         error: Array,
+        index: Number
     },
     emits: ["update:editValue"],
     computed: {
@@ -32,7 +33,10 @@ export default {
                 return this.editValue;
             },
             set(newValue) {
-                this.$emit("update:editValue", newValue, this.fieldName);
+                if(this.index !== null)
+                    this.$emit('update:editValue', newValue, this.fieldName, this.index)
+                else 
+                    this.$emit('update:editValue', newValue, this.fieldName)
             },
         },
     },

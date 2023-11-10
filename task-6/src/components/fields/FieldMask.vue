@@ -25,7 +25,8 @@ export default {
         fieldName: String,
         title: String,
         error: Array,
-        mask: String
+        mask: String,
+        index: Number
     },
     emits: ['update:editValue'],
     computed: {
@@ -34,7 +35,10 @@ export default {
                     return this.editValue
                 },
                 set(newValue) {
-                    this.$emit('update:editValue', newValue, this.fieldName)
+                    if(this.index !== null)
+                        this.$emit('update:editValue', newValue, this.fieldName, this.index)
+                    else 
+                        this.$emit('update:editValue', newValue, this.fieldName)
                 }
             }
     },

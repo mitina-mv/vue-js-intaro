@@ -3,8 +3,69 @@
     <form @submit.prevent="create" class="flex flex-column gap-4">
         <template v-for="(item, key) in values" :key="key">
             <template v-if="key == 'education'">
-                <template v-for="(itemtwo, keytwo) in item" :key="keytwo">
-                    <!-- TODO отрисовка образования -->
+                <h3>Образование</h3>
+                <template v-for="(education, index) in item" :key="index">
+                    <h4>Образование {{ index + 1 }}</h4>
+                    <template v-for="(eduItem, keyItem) in education" :key="keyItem">
+                        <div
+                            class="flex flex-column gap-2"
+                            v-if="fields[keyItem]['type'] == 'text' && ((education['level'] && education['level'] !== 'middle') || keyItem == 'level')"
+                        >
+                            <FieldText
+                                :editValue="values['education'][index][keyItem]"
+                                :fieldName="keyItem"
+                                :title="fields[keyItem]['title']"
+                                :error="errors['education'] ? errors['education'][index][keyItem] : null"
+                                @update:editValue="updateEducationValue"
+                                :index="index"
+                            />
+                        </div>
+
+                        <div
+                            class="flex flex-column gap-2"
+                            v-else-if="fields[keyItem]['type'] == 'select' && ((education['level'] && education['level'] !== 'middle') || keyItem == 'level')"
+                        >
+                            <DropdownSimple
+                                :editValue="values['education'][index][keyItem]"
+                                :fieldName="keyItem"
+                                :title="fields[keyItem]['title']"
+                                :error="errors['education'] ? errors['education'][index][keyItem] : null"
+                                @update:editValue="updateEducationValue"
+                                :options="(keyItem == 'level' ? fields[keyItem]['optionsList'] : fields[keyItem]['optionsList'][index])"
+                                :index="index"
+                            />
+                        </div>                        
+
+                        <div
+                            class="flex flex-column gap-2"
+                            v-else-if="fields[keyItem]['type'] == 'filter-select' && ((education['level'] && education['level'] !== 'middle') || keyItem == 'level')"
+                        >
+                            <DropdownSearcher
+                                :editValue="values['education'][index][keyItem]"
+                                :fieldName="keyItem"
+                                :title="fields[keyItem]['title']"
+                                :error="errors['education'] ? errors['education'][index][keyItem] : null"
+                                @update:editValue="updateIstitution"
+                                :options="fields[keyItem]['optionsList'][index]"
+                                @filter="getOptionsList"
+                                :index="index"
+                            />
+                        </div>
+
+                        <div
+                            class="flex flex-column gap-2"
+                            v-else-if="fields[keyItem]['type'] == 'year' && ((education['level'] && education['level'] !== 'middle') || keyItem == 'level')"
+                        >
+                            <FieldYear
+                                :editValue="values['education'][index][keyItem]"
+                                :fieldName="keyItem"
+                                :title="fields[keyItem]['title']"
+                                :error="errors['education'] ? errors['education'][index][keyItem] : null"
+                                @update:editValue="updateEducationValue"
+                                :index="index" 
+                            />
+                        </div>
+                    </template>
                 </template>
             </template>
 
@@ -131,6 +192,8 @@ import DropdownSearcher from '@/components/fields/DropdownSearcher.vue';
 import FieldCalendar from '@/components/fields/FieldCalendar.vue';
 import axios from "axios";
 import VK_API_KEY from "/VK_API_KEY.txt";
+import {fields} from '@/fields.js'
+import FieldYear from '@/components/fields/FieldYear.vue';
 
 const API_KEY = VK_API_KEY;
 
@@ -138,121 +201,9 @@ export default {
     data() {
         return {
             errors: {},
-            cities: null,
-            fields: {
-                profession: {
-                    title: "Профессия",
-                    type: "text",
-                },
-                full_name: {
-                    title: "ФИО",
-                    type: "text",
-                },
-                city: {
-                    title: "Город",
-                    type: "filter-select",
-                    optionsList: [],
-                    default: "0",
-                },
-                photo_path: {
-                    title: "Фото",
-                    type: "text",
-                    outerType: "image",
-                },
-                phone: {
-                    title: "Телефон",
-                    type: "mask",
-                    mask: "+7 (999) 999-99-99",
-                },
-                email: {
-                    title: "Email",
-                    type: "email",
-                },
-                birthdate: {
-                    title: "Дата рождения",
-                    type: "date",
-                },
-                salary: {
-                    title: "Желаемая зарплата",
-                    type: "money",
-                },
-                skills: {
-                    title: "Ключевые навыки",
-                    type: "chips",
-                },
-                work_schedule: {
-                    title: "График работы",
-                    type: "select",
-                    optionsList: [
-                        {
-                            name: "Полный день",
-                            code: "full",
-                        },
-                        {
-                            name: "Гибкий график",
-                            code: "flexible",
-                        },
-                        {
-                            name: "Сменный график",
-                            code: "shift",
-                        },
-                        {
-                            name: "Удаленная работа",
-                            code: "remote",
-                        },
-                        {
-                            name: "Вахтовый метод",
-                            code: "watch",
-                        },
-                    ],
-                    default: "full",
-                },
-                about: {
-                    title: "О себе",
-                    type: "editor",
-                },
-                level: {
-                    title: "Образование",
-                    type: "select",
-                    optionsList: [
-                        {
-                            name: "Среднее",
-                            code: "middle",
-                        },
-                        {
-                            name: "Среднее специальное",
-                            code: "middleSpec",
-                        },
-                        {
-                            name: "Неоконченное высшее",
-                            code: "semiHigh",
-                        },
-                        {
-                            name: "Высшее",
-                            code: "universe",
-                        },
-                    ],
-                    default: "middle",
-                },
-                institution: {
-                    title: "Учебное заведение",
-                    type: "filter-select",
-                    default: "0",
-                },
-                faculty: {
-                    title: "Факультет",
-                    type: "filter-select",
-                    default: "0",
-                },
-                specialization: {
-                    title: "Специальность",
-                    type: "text",
-                },
-                end_year: {
-                    title: "Год окончания",
-                    type: "year",
-                },
-            },
+            institutionList: null,
+            facultyList: null,
+            fields: fields,
             values: {
                 profession: null,
                 full_name: null,
@@ -298,10 +249,11 @@ export default {
         FieldChips,
         DropdownSearcher,
         FieldCalendar,
+        FieldYear,
     },
 
     methods: {
-        async getOptionsList(event, key) {
+        async getOptionsList(event, key, index = 0) {
             let countryCode = 1;
 
             switch(key) {
@@ -315,15 +267,50 @@ export default {
                     break;
                 }
                     
-                case 'institution':
+                case 'institution': {
+                    let q = `countryCode=${countryCode}&apiKey=${API_KEY}&need_all=0&q=${event.value}`;
+                    let data = await this.getRequest(`http://localhost:3000/universe?${q}`)
+
+                    if(data) {
+                        if(!this.fields.institution.optionsList[index]) {
+                            this.fields.institution.optionsList.push([])
+                        }
+                        this.fields.institution.optionsList[index] = data.items;
+                    }
                     break;
-                case 'faculty':
-                    break;
+                }                    
             }
-            console.log(this.values);
         },
         updateValue(newValue, fieldName) {
             this.values[fieldName] = newValue;
+        },
+        async updateEducationValue(newValue, fieldName, index) {
+            this.values['education'][index][fieldName] = newValue;
+        },
+
+        async updateIstitution(newValue, index, universeID)
+        {
+            let countryCode = 1;
+            
+            this.values['education'][index]['institution'] = newValue;
+
+            let q = `countryCode=${countryCode}&apiKey=${API_KEY}&university=${universeID}`;
+            let data = await this.getRequest(`http://localhost:3000/universe/faculties?${q}`)
+
+            if(data) {
+                if(!this.fields.faculty.optionsList[index]) {
+                    this.fields.faculty.optionsList.push([])
+                }
+
+                let options = [];
+                for(let itemIndex in data.items) {
+                    options.push({
+                        name: data.items[itemIndex].title,
+                        code: data.items[itemIndex].title,
+                    })
+                }
+                this.fields.faculty.optionsList[index] = options;
+            }
         },
 
         async getRequest(url) {

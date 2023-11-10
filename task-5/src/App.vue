@@ -206,8 +206,6 @@ export default {
                 }
                 this.reportData.education.push(reportGroup);
             }
-
-            console.log(this.reportData);
         },
     },
     computed: {},

@@ -166,7 +166,6 @@ export default {
             }
         },
         async loadUniverseOptions(index, str) {
-            console.log(this.educationOprions[index]);
             if (this.findInstitution[index].length >= 3) {
                 let countryCode = 1;
                 let q = `countryCode=${countryCode}&apiKey=${API_KEY}`;
