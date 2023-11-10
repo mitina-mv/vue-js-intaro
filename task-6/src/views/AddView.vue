@@ -129,6 +129,10 @@ import FieldMask from "@/components/fields/FieldMask.vue";
 import DropdownSimple from "@/components/fields/DropdownSimple.vue";
 import DropdownSearcher from '@/components/fields/DropdownSearcher.vue';
 import FieldCalendar from '@/components/fields/FieldCalendar.vue';
+import axios from "axios";
+import VK_API_KEY from "/VK_API_KEY.txt";
+
+const API_KEY = VK_API_KEY;
 
 export default {
     data() {
@@ -274,6 +278,18 @@ export default {
         };
     },
 
+    
+    async mounted() {
+        let countryCode = 1;
+        let q = `countryCode=${countryCode}&apiKey=${API_KEY}&need_all=0&q=`;
+
+        let data = await this.getRequest(`http://localhost:3000/cities?${q}`)
+
+        if(data) {
+            this.fields.city.optionsList = data.items;
+        }
+    },
+
     components: {
         FieldMask,
         FieldText,
@@ -285,14 +301,47 @@ export default {
     },
 
     methods: {
-        getOptionsList(event, key) {
-            console.log(key);
-            console.log(event.value);
+        async getOptionsList(event, key) {
+            let countryCode = 1;
+
+            switch(key) {
+                case 'city': {
+                    let q = `countryCode=${countryCode}&apiKey=${API_KEY}&need_all=0&q=${event.value}`;
+                    let data = await this.getRequest(`http://localhost:3000/cities?${q}`)
+
+                    if(data) {
+                        this.fields.city.optionsList = data.items;
+                    }
+                    break;
+                }
+                    
+                case 'institution':
+                    break;
+                case 'faculty':
+                    break;
+            }
             console.log(this.values);
         },
         updateValue(newValue, fieldName) {
             this.values[fieldName] = newValue;
         },
+
+        async getRequest(url) {
+            let result = null;
+
+            await axios.get(url)
+                .then((response) => {
+                    if (response.data.response.count > 0) {
+                        result = response.data.response
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+
+            return result;
+
+        }
     },
 };
 </script>
