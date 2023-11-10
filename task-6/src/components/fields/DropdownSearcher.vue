@@ -11,7 +11,7 @@
         filter
         @filter="$emit('filter', $event, fieldName, (index !== null ? index : null))"
     />
-    <small class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
+    <small v-show="error" class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
 </template>
 
 <script>

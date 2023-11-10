@@ -8,7 +8,7 @@
         optionValue="code"
         placeholder="Выберите..."
     />
-    <small class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
+    <small v-show="error" class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
 </template>
 
 <script>

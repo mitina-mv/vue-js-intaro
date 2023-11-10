@@ -7,7 +7,7 @@
         :placeholder="mask"
         :class="{ 'p-invalid': error }"
     />
-    <small class="p-error">{{
+    <small v-show="error" class="p-error">{{
         error ? error[0] : "&nbsp;"
     }}</small>
 </template>

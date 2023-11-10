@@ -9,7 +9,7 @@
     <small :id="fieldName + '-help'">{{
         error ? "&nbsp;" : 'Вводить через ","'
     }}</small>
-    <small class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
+    <small v-show="error" class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
 </template>
 
 <script>
@@ -43,6 +43,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+ul.p-inputtext.p-chips-multiple-container {
+    width: 100%;
+}
 </style>

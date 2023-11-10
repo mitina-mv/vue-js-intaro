@@ -1,6 +1,8 @@
 <template>
 	<ResumeMenu />
-    <router-view />
+    <main>
+        <router-view />
+    </main>
 </template>
 
 <script>
@@ -29,4 +31,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+body {
+    background: var(--surface-ground);
+}
+</style>
