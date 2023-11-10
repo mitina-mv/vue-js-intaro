@@ -64,7 +64,11 @@ class ResumeController extends Controller
 
         foreach($request->education as $education)
         {
-            if($education['id']) 
+            if(!empty($education['flag_delete'])) {
+                $edu = Education::find($education['id']);
+                $edu->delete();
+            }
+            else if(!empty($education['id'])) 
             {
                 $edu = Education::find($education['id']);
                 unset($education['id']);

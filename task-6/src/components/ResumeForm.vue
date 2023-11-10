@@ -24,7 +24,10 @@
                             icon="pi pi-trash"
                             @click="deleteEducation(index)"
                             text 
+                            v-if="!education['flag_delete']"
                         />
+
+                        <span class="delete-text" v-if="education['flag_delete']">Будет удалено</span>
                     </div>
 
                     <template
@@ -311,6 +314,20 @@ export default {
         if (data) {
             this.fields.city.optionsList = data.items;
         }
+
+        if(this.values.id)
+        {
+            for(let index in this.values.education)
+            {
+                let edu = this.values.education[index];
+
+                if(edu.institution) {
+                    await this.getInstitution(edu.institution, index);
+                    let id = this.fields.institution.optionsList[index][0]['id'];
+                    await this.getFaculty(id, index)
+                }
+            }
+        }
     },
 
     components: {
@@ -328,8 +345,6 @@ export default {
 
     methods: {
         async getOptionsList(event, key, index = 0) {
-            let countryCode = 1;
-
             switch (key) {
                 case "city": {
                     this.getCities(event.value);
@@ -337,17 +352,7 @@ export default {
                 }
 
                 case "institution": {
-                    let q = `countryCode=${countryCode}&apiKey=${API_KEY}&need_all=0&q=${event.value}`;
-                    let data = await this.getRequest(
-                        `http://localhost:3000/universe?${q}`
-                    );
-
-                    if (data) {
-                        if (!this.fields.institution.optionsList[index]) {
-                            this.fields.institution.optionsList.push([]);
-                        }
-                        this.fields.institution.optionsList[index] = data.items;
-                    }
+                    this.getInstitution(event.value, index);
                     break;
                 }
             }
@@ -363,6 +368,20 @@ export default {
                 this.fields.city.optionsList = data.items;
             }
         },
+        async getInstitution(q, index = 0){
+            let countryCode = 1;
+            let query = `countryCode=${countryCode}&apiKey=${API_KEY}&q=${q}`;
+            let data = await this.getRequest(
+                `http://localhost:3000/universe?${query}`
+            );
+
+            if (data) {
+                if (!this.fields.institution.optionsList[index]) {
+                    this.fields.institution.optionsList.push([]);
+                }
+                this.fields.institution.optionsList[index] = data.items;
+            }
+        },
         updateValue(newValue, fieldName) {
             this.values[fieldName] = newValue;
         },
@@ -371,13 +390,16 @@ export default {
         },
 
         async updateIstitution(newValue, index, universeID) {
-            let countryCode = 1;
-
             this.values["education"][index]["institution"] = newValue;
+            await this.getFaculty(universeID, index)
+        },
 
-            let q = `countryCode=${countryCode}&apiKey=${API_KEY}&university=${universeID}`;
+        
+        async getFaculty(id, index = 0){
+            let countryCode = 1;
+            let query = `countryCode=${countryCode}&apiKey=${API_KEY}&university=${id}`;
             let data = await this.getRequest(
-                `http://localhost:3000/universe/faculties?${q}`
+                `http://localhost:3000/universe/faculties?${query}`
             );
 
             if (data) {
@@ -420,16 +442,26 @@ export default {
                 faculty: null,
                 end_year: null,
             });
+            this.fields.faculty.optionsList.push([]);
+            this.fields.institution.optionsList.push([]);
         },
 
         deleteEducation(index) {
+            let education = this.values.education[index];
+            
             if(this.values.education.length - 1 == 0){
                 console.log('нельзя удалить все образования');
                 return;
             }
-            this.values.education.splice(index, 1);
-            this.fields.faculty.optionsList.splice(index, 1);
-            this.fields.institution.optionsList.splice(index, 1);
+
+            if(education.id)
+            {
+                education.flag_delete = true;
+            } else {
+                this.values.education.splice(index, 1);
+                this.fields.faculty.optionsList.splice(index, 1);
+                this.fields.institution.optionsList.splice(index, 1);
+            }
         },
         storeResume()
         {            
@@ -513,5 +545,11 @@ export default {
     position: sticky;
     bottom: 20px;
     margin-top: 1em;
+}
+.delete-text {
+    background: var(--red-600);
+    font-weight: bold;
+    padding: .5em 1em;
+    color: var(--surface-0);
 }
 </style>

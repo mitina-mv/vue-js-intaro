@@ -42,6 +42,7 @@ class ResumeRequest extends FormRequest
             'education.*.faculty' => ['nullable', 'string', 'max:255'],
             'education.*.specialization' => ['nullable', 'string', 'max:255'],
             'education.*.end_year' => ['nullable', 'integer', 'min:'.(date('Y') - 100), 'max:'.(date('Y') + 10)],
+            'education.*.flag_delete' => ['nullable', 'boolean'],
         ];
     }
 

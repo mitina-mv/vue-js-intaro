@@ -1,6 +1,6 @@
 <template>
     <main>
-        <h1>Редактирование: {{  }}</h1>
+        <h1>Редактирование: {{ resumeDetail.full_name }}</h1>
         <ResumeForm v-if="resumeDetail.id" :resume="resumeDetail" @saveResume="storeResume" :errors="errors" />
     </main>
 </template>
