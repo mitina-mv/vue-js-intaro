@@ -5,9 +5,10 @@
         v-model="modelValue"
         separator=","
         :aria-describedby="fieldName + '-help'"
+        :class="{ 'p-invalid': error }"
     />
-    <small :id="fieldName + '-help'">{{
-        error ? "&nbsp;" : 'Вводить через ","'
+    <small v-show="!error" :id="fieldName + '-help'" class="field-help-text">{{
+        error ? "&nbsp;" : 'Вводить через "," или с помощью Enter'
     }}</small>
     <small v-show="error" class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
 </template>
@@ -43,8 +44,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 ul.p-inputtext.p-chips-multiple-container {
     width: 100%;
+}
+.field-help-text{
+    color: var(--gray-400);
 }
 </style>

@@ -7,6 +7,7 @@
         optionLabel="name"
         optionValue="code"
         placeholder="Выберите..."
+        :class="{ 'p-invalid': error }"
     />
     <small v-show="error" class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
 </template>

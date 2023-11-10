@@ -12,12 +12,11 @@ export const fields = {
         type: "filter-select",
         optionsList: [],
         default: "0",
-    },
-    photo_path: {
-        title: "Фото",
-        type: "text",
-        outerType: "image",
-    },
+    },    
+    birthdate: {
+        title: "Дата рождения",
+        type: "date",
+    },  
     phone: {
         title: "Телефон",
         type: "mask",
@@ -27,17 +26,14 @@ export const fields = {
         title: "Email",
         type: "email",
     },
-    birthdate: {
-        title: "Дата рождения",
-        type: "date",
+    photo_path: {
+        title: "Ссылка на фото",
+        type: "text",
+        outerType: "image",
     },
     salary: {
         title: "Желаемая зарплата",
         type: "money",
-    },
-    skills: {
-        title: "Ключевые навыки",
-        type: "chips",
     },
     work_schedule: {
         title: "График работы",
@@ -65,6 +61,10 @@ export const fields = {
             },
         ],
         default: "full",
+    },    
+    skills: {
+        title: "Ключевые навыки",
+        type: "chips",
     },
     about: {
         title: "О себе",

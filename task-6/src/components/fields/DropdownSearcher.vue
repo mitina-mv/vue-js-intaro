@@ -7,6 +7,7 @@
         optionLabel="title"
         optionValue="title"
         placeholder="Введите для поиска..."
+        :class="{ 'p-invalid': error }"
         showClear
         filter
         @filter="$emit('filter', $event, fieldName, (index !== null ? index : null))"

@@ -1,7 +1,7 @@
 <template>
     <main>
-        <h1>форма добавления</h1>
-        <ResumeForm :resume="values" />
+        <h1>Форма добавления</h1>
+        <ResumeForm :resume="values" @saveResume="storeResume" :errors="errors" />
     </main>
 </template>
 
@@ -11,7 +11,6 @@ import ResumeForm from "@/components/ResumeForm.vue";
 export default {
     data() {
         return {
-            errors: {},
             values: {
                 profession: null,
                 full_name: null,
@@ -45,8 +44,19 @@ export default {
         ResumeForm,
     },
 
-    methods: {
+    methods: {        
+        storeResume(resume)
+        {
+            console.log(resume);           
+            this.$store.dispatch('SAVE_RESUME', resume);   
+        }
     },
+    
+    computed: {
+        errors() {
+            return this.$store.getters.ERRORS;
+        }
+    }
 };
 </script>
 

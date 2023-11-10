@@ -27,7 +27,8 @@ export const store = createStore({
                         end_year: null,
                     }
                 ],
-            }
+            },
+            errors: []
         };
     },
     getters: {
@@ -37,12 +38,17 @@ export const store = createStore({
         RESUME_DETAIL: (state) => {
             return state.resumeDetail;
         },
+        ERRORS: (state) => {
+            return state.errors;
+        },
     },
     mutations: {
         SET_RESUME: (state, payload) => {
             state.resumes = payload;
         },
-
+        SET_ERRORS: (state, payload) => {
+            state.errors = payload;
+        },
         ADD_RESUME: (state, payload) => {
             state.resumes.push(payload);
         },
@@ -92,11 +98,16 @@ export const store = createStore({
         },
 
         SAVE_RESUME: async (context, payload) => {
-            let { data } = await axios.post(
+            await axios.post(
                 "http://localhost:8000/api/cv",
                 payload
-            );
-            context.commit("ADD_RESUME", data);
+            )
+            .then(response => {
+                context.commit("ADD_RESUME", payload);
+            })
+            .catch(error => {
+                context.commit("SET_ERRORS", error.response.data.errors);
+            });
         },
 
         UPDATE_STATUS_RESUME: async (context, payload) => {

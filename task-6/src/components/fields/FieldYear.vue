@@ -1,23 +1,17 @@
 <template>
     <label :for="fieldName">{{ title }}</label>
-    <Calendar
-        v-model="modelValue"
-        view="year"
-        dateFormat="yy"
-        :class="{ 'p-invalid': error }"
-        :id="fieldName"
-    />
+    <InputNumber v-model="modelValue" :id="fieldName" :useGrouping="false" :class="{ 'p-invalid': error }" min="1950" max="2060" />
 
     <small v-show="error" class="p-error">{{ error ? error[0] : "&nbsp;" }}</small>
 </template>
 
 <script>
-import Calendar from "primevue/calendar";
+import InputNumber from 'primevue/inputnumber';
 
 export default {
     name: "FieldYear",
     components: {
-        Calendar,
+        InputNumber,
     },
     props: {
         editValue: String,

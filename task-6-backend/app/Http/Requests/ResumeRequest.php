@@ -41,7 +41,7 @@ class ResumeRequest extends FormRequest
             'education.*.institution' => ['nullable', 'string', 'max:255'],
             'education.*.faculty' => ['nullable', 'string', 'max:255'],
             'education.*.specialization' => ['nullable', 'string', 'max:255'],
-            'education.*.end_year' => ['nullable', 'integer', 'min:1950', 'max:'.date('Y')],
+            'education.*.end_year' => ['nullable', 'integer', 'min:'.(date('Y') - 100), 'max:'.(date('Y') + 10)],
         ];
     }
 
@@ -49,6 +49,7 @@ class ResumeRequest extends FormRequest
     {
         return [
             '*.required' => 'Поле ":attribute" обязательно к заполнению!',
+            '*.*.*.required' => 'Поле ":attribute" обязательно к заполнению!',
             '*.in' => 'Выбрано недопустимое значение!',
             '*.regex' => 'Не соотвествует маске!',
             '*.email' => 'Необходимо ввести адрес электронной почты!',

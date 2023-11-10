@@ -44,11 +44,7 @@
                                 :editValue="values['education'][index][keyItem]"
                                 :fieldName="keyItem"
                                 :title="fields[keyItem]['title']"
-                                :error="
-                                    errors['education']
-                                        ? errors['education'][index][keyItem]
-                                        : null
-                                "
+                                :error="errors[`education.${index}.${keyItem}`]"
                                 @update:editValue="updateEducationValue"
                                 :index="index"
                             />
@@ -67,11 +63,7 @@
                                 :editValue="values['education'][index][keyItem]"
                                 :fieldName="keyItem"
                                 :title="fields[keyItem]['title']"
-                                :error="
-                                    errors['education']
-                                        ? errors['education'][index][keyItem]
-                                        : null
-                                "
+                                :error="errors[`education.${index}.${keyItem}`]"
                                 @update:editValue="updateEducationValue"
                                 :options="
                                     keyItem == 'level'
@@ -95,11 +87,7 @@
                                 :editValue="values['education'][index][keyItem]"
                                 :fieldName="keyItem"
                                 :title="fields[keyItem]['title']"
-                                :error="
-                                    errors['education']
-                                        ? errors['education'][index][keyItem]
-                                        : null
-                                "
+                                :error="errors[`education.${index}.${keyItem}`]"
                                 @update:editValue="updateIstitution"
                                 :options="fields[keyItem]['optionsList'][index]"
                                 @filter="getOptionsList"
@@ -120,11 +108,7 @@
                                 :editValue="values['education'][index][keyItem]"
                                 :fieldName="keyItem"
                                 :title="fields[keyItem]['title']"
-                                :error="
-                                    errors['education']
-                                        ? errors['education'][index][keyItem]
-                                        : null
-                                "
+                                :error="errors[`education.${index}.${keyItem}`]"
                                 @update:editValue="updateEducationValue"
                                 :index="index"
                             />
@@ -164,6 +148,19 @@
                 v-else-if="fields[key]['type'] == 'date'"
             >
                 <FieldCalendar
+                    :editValue="values[key]"
+                    :fieldName="key"
+                    :title="fields[key]['title']"
+                    :error="errors[key]"
+                    @update:editValue="updateValue"
+                />
+            </div>
+
+            <div
+                class="flex flex-column gap-2"
+                v-else-if="fields[key]['type'] == 'money'"
+            >
+                <FieldMoney
                     :editValue="values[key]"
                     :fieldName="key"
                     :title="fields[key]['title']"
@@ -259,7 +256,7 @@
                 label="Сохранить"
                 size="small"
                 icon="pi pi-cloud-upload"
-                @click="storeResume"
+                @click="this.$emit('saveResume', this.values)"
                 style="width: 15%;"
             />
         </div>
@@ -279,13 +276,13 @@ import VK_API_KEY from "/VK_API_KEY.txt";
 import { fields } from "@/fields.js";
 import FieldYear from "@/components/fields/FieldYear.vue";
 import Button from "primevue/button";
+import FieldMoney from './fields/FieldMoney.vue';
 
 const API_KEY = VK_API_KEY;
 
 export default {
     data() {
         return {
-            errors: {},
             institutionList: null,
             facultyList: null,
             fields: fields,
@@ -293,7 +290,9 @@ export default {
         };
     },
 
-    props: ["resume"],
+    props: ["resume", 'errors'],
+
+    emits: ['saveResume'],
 
     async mounted() {
         let countryCode = 1;
@@ -316,6 +315,7 @@ export default {
         FieldCalendar,
         FieldYear,
         Button,
+        FieldMoney,
     },
 
     methods: {
@@ -420,8 +420,8 @@ export default {
             this.fields.institution.optionsList.splice(index, 1);
         },
         storeResume()
-        {
-            console.log('send');
+        {            
+            this.$emit('saveResume', this.values);
         },
         nullableResume()
         {
