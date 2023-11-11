@@ -3,7 +3,9 @@
         <div class="header">
             <h1>{{ resumeDetail.full_name }}</h1>
             <Button text>
-                <router-link :to="'/edit/' + resumeDetail.id"><i class="pi pi-pencil"></i></router-link>
+                <router-link :to="'/edit/' + resumeDetail.id"
+                    ><i class="pi pi-pencil"></i
+                ></router-link>
             </Button>
             <div class="status" :class="'status_' + resumeDetail.status">
                 {{ status }}
@@ -59,17 +61,41 @@
                         <div class="resume-captions">
                             {{ fields[key]["title"] }}
                         </div>
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 flex-wrap">
                             <template v-for="(skill, ind) in item" :key="ind">
                                 <Chip :label="skill" />
                             </template>
                         </div>
                     </div>
                 </template>
+                <div>
+                    <div class="resume-captions">
+                        {{ fields['about']["title"] }}:
+                    </div>
+                    <div v-html="resumeDetail.about"></div>
+                </div>
+            </div>
+            <div class="educations">
+                <div
+                    class="edu-item"
+                    v-for="(edu, index) in resumeDetail.education"
+                    :key="index"
+                >
+                    <template v-for="(item, key) in edu" :key="key">
+                        <div class="resume-field" v-if="item !== null && fields[key] && (fields[key]['type'] != 'select' || key == 'faculty')">
+                        <span>{{ fields[key]["title"] }}</span
+                        >: {{ item }}
+                        </div>
+
+                        <div class="resume-field" v-else-if="item !== null && fields[key] && fields[key]['type'] == 'select'">
+                        <span>{{ fields[key]["title"] }}</span
+                        >: {{ findObjFromOptions(key, item) }}
+                        </div>
+
+                    </template>
+                </div>
             </div>
         </div>
-
-        <router-link :to="{ name: 'home' }"> На главную </router-link>
     </main>
 </template>
 
@@ -77,7 +103,7 @@
 import { fields } from "@/fields.js";
 import Image from "primevue/image";
 import Chip from "primevue/chip";
-import Button from 'primevue/button';
+import Button from "primevue/button";
 
 export default {
     name: "ShowView",
@@ -182,6 +208,23 @@ main {
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 1em;
+}
+.educations {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    gap: 1em;
+    grid-column: 1/-1;
+}
+.edu-item {
+    padding: 1em;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--border-radius);
+    display: grid;
+    gap: .5em;
+}
+.flex-wrap {
+    flex-wrap: wrap;
 }
 </style>
 
