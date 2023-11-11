@@ -6,3 +6,13 @@
 3. [task 3](/task-5/) - Vue-проект резюме (задания выполняются по веткам).
 4. [task 6](/task-6/) - Front-часть проекта "База резюме".
 5. [backend](/task-6-backend/) - Back-часть проекта "База резюме" (на Ларавел).
+
+## Скриншоты работы 6
+Главный экран
+![alt text](https://github.com/mitina-mv/vue-js-intaro/blob/main/images/1.png)
+
+Форма добавления
+![alt text](https://github.com/mitina-mv/vue-js-intaro/blob/main/images/2.png)
+
+Детальная страница резюме
+![alt text](https://github.com/mitina-mv/vue-js-intaro/blob/main/images/3.png)
